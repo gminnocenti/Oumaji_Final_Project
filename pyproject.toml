@@ -1,0 +1,9 @@
+[project]
+name = "oumaji-final-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "mlflow>=2.22.0",
+]
