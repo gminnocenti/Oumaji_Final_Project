@@ -125,3 +125,6 @@ temp/
 
 # Explicitly allow Jupyter Notebooks
 !*.ipynb
+
+# CSVs
+*.csv
