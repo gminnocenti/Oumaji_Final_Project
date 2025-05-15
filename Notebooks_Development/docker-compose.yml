@@ -1,32 +1,13 @@
+version: '3.8'
+
 services:
   mlflow:
     build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: mlflow
+      context: .              # Path to your Dockerfile (same folder)
+      dockerfile: Dockerfile # Optional if your file is named 'Dockerfile'
+    container_name: mlflow_Oumaji_experiment
     ports:
-      - "5000:5000"
+      - "5001:5000"           # Maps container port 5000 to host port 5001
     volumes:
-      - mldata:/ml/
-    depends_on:
-      - postgres
-    command: >
-      mlflow server 
-      --host=0.0.0.0 
-      --backend-store-uri postgresql://mlflow:mlflow@postgres/mlflow_db
-      --artifacts-destination file:///ml/mlartifacts
-  postgres:
-    image: postgres:latest
-    container_name: postgres
-    environment:
-      POSTGRES_USER: mlflow
-      POSTGRES_PASSWORD: mlflow
-      POSTGRES_DB: mlflow_db
-    ports:
-      - "5433:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-volumes:
-  mldata:
-
-  pgdata:
+      - ./mlruns:/ml/mlruns          # Persists MLflow run metadata
+      - ./mlartifacts:/ml/mlartifacts # Persists MLflow artifacts
