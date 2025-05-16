@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1747431622982
+current_stage: None
+description: ''
+last_updated_timestamp: 1747431622982
+name: MLFLOW_OUMAJI_EJEMPLO
+run_id: a65b31045fa44e9783d74d1d9457a1b8
+run_link: ''
+source: mlflow-artifacts:/633372116283320291/a65b31045fa44e9783d74d1d9457a1b8/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/633372116283320291/a65b31045fa44e9783d74d1d9457a1b8/artifacts/model
+user_id: null
+version: 3
