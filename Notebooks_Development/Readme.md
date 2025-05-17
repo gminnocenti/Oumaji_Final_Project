@@ -6,7 +6,10 @@ En este folder se deben desarrollar desarrollar todos los notebooks de prueba pa
 ```
 cd Notebooks_Development
 ```
-
+corro este archivo
+```
+python fix_meta.py
+```
 2. En el directorio del folder corro en la terminal
 Para construir la imagen
 
