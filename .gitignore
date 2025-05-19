@@ -129,3 +129,11 @@ temp/
 
 # CSVs
 *.csv
+
+# Mlflow
+Notebooks_Development/mlruns/*/meta.yaml
+Notebooks_Development/mlruns/*/*/meta.yaml
+
+# Pytorch results
+Notebooks_Development/checkpoints
+Notebooks_Development/lightning_logs
