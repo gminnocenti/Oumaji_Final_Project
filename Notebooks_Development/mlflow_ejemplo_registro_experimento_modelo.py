@@ -30,7 +30,7 @@ print(f"Model Accuracy: {accuracy:.2f}")
 signature = infer_signature(X_train, clf.predict(X_train))
 
 # Log with MLflow
-with mlflow.start_run():
+with mlflow.start_run():    
     # declarar parametros
     mlflow.log_param("random_state", 42)
     # declarar metricas puedes declarar muchas metricas mas
