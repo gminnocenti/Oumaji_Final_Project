@@ -16,5 +16,6 @@ dependencies = [
     "torch>=2.2.0,<3.0", # binarios oficiales, incluye CUDA CPU
     "lightning>=2.2.0,<2.6", # sucesor de PyTorch-Lightning
     "pytorch-forecasting>=1.2.1,<1.4",
-    "torchmetrics>=0.11.4,<0.12"
+    "torchmetrics>=0.11.4,<0.12",
+    "holidays>=0.73",
 ]
