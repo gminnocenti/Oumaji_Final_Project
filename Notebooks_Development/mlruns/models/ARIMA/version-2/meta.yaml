@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1747870447259
+current_stage: None
+description: ''
+last_updated_timestamp: 1747870447259
+name: ARIMA
+run_id: 1751689cebe14bd28465f0f4c2634ff2
+run_link: ''
+source: mlflow-artifacts:/176230793224478268/1751689cebe14bd28465f0f4c2634ff2/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/176230793224478268/1751689cebe14bd28465f0f4c2634ff2/artifacts/model
+user_id: null
+version: 2
