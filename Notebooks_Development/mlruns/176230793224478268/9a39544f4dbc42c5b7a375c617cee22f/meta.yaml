@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/9a39544f4dbc42c5b7a375c617cee22f/artifacts
+end_time: 1747870973789
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 9a39544f4dbc42c5b7a375c617cee22f
+run_name: learned-mole-116
+run_uuid: 9a39544f4dbc42c5b7a375c617cee22f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747870971269
+status: 3
+tags: []
+user_id: bernardocisneros
