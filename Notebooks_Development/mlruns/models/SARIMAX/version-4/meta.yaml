@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1747864317700
+current_stage: None
+description: ''
+last_updated_timestamp: 1747864317700
+name: SARIMAX
+run_id: 90710798716a4a97acb6f13b06693ba5
+run_link: ''
+source: mlflow-artifacts:/176230793224478268/90710798716a4a97acb6f13b06693ba5/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/176230793224478268/90710798716a4a97acb6f13b06693ba5/artifacts/model
+user_id: null
+version: 4
