@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/f57ca95cd2e641a9b263c8a3316d7617/artifacts
+end_time: 1747782266557
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: f57ca95cd2e641a9b263c8a3316d7617
+run_name: bald-mare-960
+run_uuid: f57ca95cd2e641a9b263c8a3316d7617
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747782250460
+status: 3
+tags: []
+user_id: jlaza

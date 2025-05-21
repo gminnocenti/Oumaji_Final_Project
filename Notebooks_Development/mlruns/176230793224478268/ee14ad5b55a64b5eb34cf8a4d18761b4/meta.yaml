@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/ee14ad5b55a64b5eb34cf8a4d18761b4/artifacts
+end_time: 1747783355204
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: ee14ad5b55a64b5eb34cf8a4d18761b4
+run_name: puzzled-ox-179
+run_uuid: ee14ad5b55a64b5eb34cf8a4d18761b4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747783338040
+status: 3
+tags: []
+user_id: jlaza

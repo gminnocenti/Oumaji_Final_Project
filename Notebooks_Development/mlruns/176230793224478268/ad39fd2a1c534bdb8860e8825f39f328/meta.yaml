@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/ad39fd2a1c534bdb8860e8825f39f328/artifacts
+end_time: 1747782191556
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: ad39fd2a1c534bdb8860e8825f39f328
+run_name: dashing-vole-29
+run_uuid: ad39fd2a1c534bdb8860e8825f39f328
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747782174931
+status: 3
+tags: []
+user_id: jlaza

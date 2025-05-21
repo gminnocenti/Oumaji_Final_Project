@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/18ce8269b1b446b09f57f774b1c2678f/artifacts
+end_time: 1747782464237
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 18ce8269b1b446b09f57f774b1c2678f
+run_name: trusting-ant-992
+run_uuid: 18ce8269b1b446b09f57f774b1c2678f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747782447825
+status: 3
+tags: []
+user_id: jlaza
