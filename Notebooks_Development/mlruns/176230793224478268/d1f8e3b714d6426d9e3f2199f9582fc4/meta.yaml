@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/d1f8e3b714d6426d9e3f2199f9582fc4/artifacts
+end_time: 1747797387223
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: d1f8e3b714d6426d9e3f2199f9582fc4
+run_name: gaudy-hawk-103
+run_uuid: d1f8e3b714d6426d9e3f2199f9582fc4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747797370200
+status: 3
+tags: []
+user_id: jlaza

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/64153cc1da15474b9024f0137eb3fa86/artifacts
+end_time: 1747797670170
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 64153cc1da15474b9024f0137eb3fa86
+run_name: languid-deer-634
+run_uuid: 64153cc1da15474b9024f0137eb3fa86
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747797655633
+status: 3
+tags: []
+user_id: jlaza
