@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/400716610318719328/b82175e0e93f4c9896edd58b19156386/artifacts
+end_time: 1747700814588
+entry_point_name: ''
+experiment_id: '400716610318719328'
+lifecycle_stage: active
+run_id: b82175e0e93f4c9896edd58b19156386
+run_name: illustrious-asp-80
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747700121598
+status: 3
+tags: []
+user_id: axllopez
