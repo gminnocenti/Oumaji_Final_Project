@@ -19,4 +19,5 @@ dependencies = [
     "torchmetrics>=0.11.4,<0.12",
     "holidays>=0.73",
     "lightgbm>=4.6.0",
+    "statsmodels>=0.14.4",
 ]
