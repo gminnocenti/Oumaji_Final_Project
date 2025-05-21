@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/48c5208f093b4426862fcf59fe329465/artifacts
+end_time: 1747870759931
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 48c5208f093b4426862fcf59fe329465
+run_name: melodic-lynx-375
+run_uuid: 48c5208f093b4426862fcf59fe329465
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747870757893
+status: 3
+tags: []
+user_id: bernardocisneros
