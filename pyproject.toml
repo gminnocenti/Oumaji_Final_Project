@@ -18,4 +18,5 @@ dependencies = [
     "pytorch-forecasting>=1.2.1,<1.4",
     "torchmetrics>=0.11.4,<0.12",
     "holidays>=0.73",
+    "statsmodels>=0.14.4",
 ]
