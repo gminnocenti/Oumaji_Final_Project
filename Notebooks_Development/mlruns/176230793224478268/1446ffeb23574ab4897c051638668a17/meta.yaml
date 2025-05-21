@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/1446ffeb23574ab4897c051638668a17/artifacts
+end_time: 1747867854069
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 1446ffeb23574ab4897c051638668a17
+run_name: dashing-grouse-529
+run_uuid: 1446ffeb23574ab4897c051638668a17
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747867852580
+status: 3
+tags: []
+user_id: bernardocisneros
