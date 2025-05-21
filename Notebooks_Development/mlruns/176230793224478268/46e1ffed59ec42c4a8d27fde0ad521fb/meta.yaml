@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/46e1ffed59ec42c4a8d27fde0ad521fb/artifacts
+end_time: 1747867820924
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 46e1ffed59ec42c4a8d27fde0ad521fb
+run_name: legendary-bee-879
+run_uuid: 46e1ffed59ec42c4a8d27fde0ad521fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747867819103
+status: 3
+tags: []
+user_id: bernardocisneros
