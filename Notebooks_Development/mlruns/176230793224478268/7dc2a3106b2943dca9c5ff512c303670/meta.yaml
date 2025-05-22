@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/7dc2a3106b2943dca9c5ff512c303670/artifacts
+end_time: 1747871630223
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 7dc2a3106b2943dca9c5ff512c303670
+run_name: aged-grub-666
+run_uuid: 7dc2a3106b2943dca9c5ff512c303670
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747871611608
+status: 3
+tags: []
+user_id: jlaza
