@@ -1,5 +1,6 @@
-aliases: {}
+aliases:
+  goat: '2'
 creation_timestamp: 1747789854862
 description: ''
-last_updated_timestamp: 1747864341755
+last_updated_timestamp: 1747889883067
 name: SARIMAX
