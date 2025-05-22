@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/13fa513cc187451eab8e61fea9c649c4/artifacts
+end_time: 1747889810285
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 13fa513cc187451eab8e61fea9c649c4
+run_name: hilarious-skink-54
+run_uuid: 13fa513cc187451eab8e61fea9c649c4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747889808428
+status: 3
+tags: []
+user_id: bernardocisneros
