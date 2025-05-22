@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/8d983020c9ba4bacb0f4eaf467acedfe/artifacts
+end_time: 1747944232114
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 8d983020c9ba4bacb0f4eaf467acedfe
+run_name: agreeable-deer-752
+run_uuid: 8d983020c9ba4bacb0f4eaf467acedfe
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747944216860
+status: 3
+tags: []
+user_id: jlaza
