@@ -10,10 +10,6 @@ iaab_Detalles_Vtas:
   type: pandas.CSVDataset
   filepath: data/01_raw/iaab_Detalles_Vtas.csv
 
-iaab_Platillos:
-  type: pandas.CSVDataset
-  filepath: data/01_raw/iaab_Platillos.csv
-
 data_cleaned_reservations:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/df_cleaned_reservations.csv
@@ -26,9 +22,9 @@ daily_occupancy:
   type: pandas.CSVDataset
   filepath: data/03_primary/daily_occupancy.csv
 
-weekly_demand:
+daily_demand:
   type: pandas.CSVDataset
-  filepath: data/03_primary/weekly_demand.csv
+  filepath: data/03_primary/daily_demand.csv
 
 dishes_mapping:
   type: pandas.CSVDataset
@@ -37,4 +33,8 @@ dishes_mapping:
 results_occupancy:
   type: pandas.CSVDataset
   filepath: data/08_reporting/occupancy_results.csv
+
+results_demand:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/demand_results.csv
 

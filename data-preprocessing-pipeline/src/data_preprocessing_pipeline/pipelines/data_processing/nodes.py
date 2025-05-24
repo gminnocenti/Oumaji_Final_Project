@@ -123,15 +123,16 @@ def clean_dishes(df: pd.DataFrame, numeric_columns_dishes: list[str]) -> pd.Data
 
     return df_clean[~outlier_mask]
 
-def generate_weekly_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+def generate_daily_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Generates a weekly demand DataFrame by aggregating daily data into weekly data.
+    Generates a daily demand DataFrame.
     It also creates a mapping DataFrame for platillo_cve to platillo_id.
     The function filters the data to include only dates in the daily_occupancy dataset.
     It also creates some time features:
-        - 'semana_inicio': Start of the week for each date.
-        - 'lag_1': occupancy of the previous week.
-        - 'lag_2': occupancy of two weeks before.
+        - 'lag_1': demand of the previous days.
+        - 'lag_7': demand one week ago.
+        - 'dia_festivo': 1 if the date is a holiday, 0 otherwise.
+        - 'dia_semana': 0 if its monday, 1 if its tuesday, etc.
 
     Also, it filters dishes with low revenue, keeping only the top 80% of revenue-generating dishes.
     Thus helping to reduce the dimensionality of the data and focus on the most important dishes.
@@ -142,18 +143,13 @@ def generate_weekly_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tupl
 
     Returns:
         tuple[pd.DataFrame, pd.DataFrame]: A tuple containing:
-            - weekly_df: A DataFrame with weekly demand data.
+            - daily_df: A DataFrame with weekly demand data.
             - mapping_df: A DataFrame with mapping of platillo_cve to platillo_id.
 
     """
 
-    df = df.copy()
-    df_occupancy = df_occupancy.copy()
-
     df["fec_com"] = pd.to_datetime(df["fec_com"], format="%Y%m%d", errors="coerce")
     df_occupancy["fecha"] = pd.to_datetime(df_occupancy["fecha"], errors="coerce")
-    df_occupancy['semana_inicio'] = df_occupancy["fecha"].dt.to_period("W").apply(lambda r: r.start_time)
-    df_occupancy["semana_inicio"] = pd.to_datetime(df_occupancy["semana_inicio"], errors="coerce")
 
     valid_dates = df_occupancy["fecha"].unique()
     df = df[df["fec_com"].isin(valid_dates)]
@@ -165,44 +161,40 @@ def generate_weekly_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tupl
 
     all_dates = pd.date_range(grouped["fecha"].min(), grouped["fecha"].max())
     all_combinations = pd.MultiIndex.from_product([all_dates, grouped["platillo_cve"].unique()], names=["fecha", "platillo_cve"])
-    dummy_df = grouped.set_index(["fecha", "platillo_cve"]).reindex(all_combinations, fill_value=0).reset_index()
-    dummy_df = dummy_df[dummy_df['fecha'] <= '2020-03-13']
+    daily_df = grouped.set_index(["fecha", "platillo_cve"]).reindex(all_combinations, fill_value=0).reset_index()
+    daily_df = daily_df[daily_df['fecha'] <= '2020-03-13']
 
-    platillo_id_map = {cve: idx for idx, cve in enumerate(sorted(dummy_df["platillo_cve"].unique()))}
-    dummy_df["platillo_id"] = dummy_df["platillo_cve"].map(platillo_id_map)
+    platillo_id_map = {cve: idx for idx, cve in enumerate(sorted(daily_df["platillo_cve"].unique()))}
+    daily_df["platillo_id"] = daily_df["platillo_cve"].map(platillo_id_map)
 
-    dummy_df = dummy_df.merge(df_occupancy[["fecha", "ocupacion"]], on="fecha", how="left")
+    daily_df = daily_df.merge(df_occupancy[["fecha", "ocupacion"]], on="fecha", how="left")
 
-    dummy_df['semana_inicio'] = dummy_df["fecha"].dt.to_period("W").apply(lambda r: r.start_time)
+    years = range(daily_df["fecha"].dt.year.min(), daily_df["fecha"].dt.year.max() + 1)
+    mx_holidays = holidays.MX(years=years)
 
-    weekly_df = dummy_df.groupby(["semana_inicio", "platillo_id", "platillo_cve"], as_index=False).agg({
-        "cantidad": "sum",
-        "monto_total": "sum"
-    })
+    daily_df["dia_festivo"] = daily_df["fecha"].isin(mx_holidays).astype(int)
+    daily_df["dia_semana"] = daily_df["fecha"].dt.weekday
+    daily_df = daily_df.sort_values(by=["platillo_id", "fecha"])
+    daily_df["lag_1"] = daily_df.groupby("platillo_id")["cantidad"].shift(1)
+    daily_df["lag_7"] = daily_df.groupby("platillo_id")["cantidad"].shift(7)
 
-    occupancy_weekly = df_occupancy.groupby("semana_inicio", as_index=False)["ocupacion"].sum()
-    weekly_df = weekly_df.merge(occupancy_weekly, on="semana_inicio", how="left")
-
-    weekly_df = weekly_df.sort_values(by=["platillo_id", "semana_inicio"])
-    weekly_df["lag_1"] = weekly_df.groupby("platillo_id")["cantidad"].shift(1)
-    weekly_df["lag_2"] = weekly_df.groupby("platillo_id")["cantidad"].shift(2)
-
-    revenue_por_platillo = weekly_df.groupby("platillo_id")["monto_total"].sum().reset_index()
+    revenue_por_platillo = daily_df.groupby("platillo_id")["monto_total"].sum().reset_index()
 
     revenue_por_platillo = revenue_por_platillo.sort_values("monto_total", ascending=False)
     revenue_por_platillo["revenue_acum"] = revenue_por_platillo["monto_total"].cumsum()
     revenue_por_platillo["revenue_ratio"] = revenue_por_platillo["revenue_acum"] / revenue_por_platillo["monto_total"].sum()
 
     platillos_top_80 = revenue_por_platillo[revenue_por_platillo["revenue_ratio"] <= 0.8]["platillo_id"]
-    weekly_df = weekly_df[weekly_df["platillo_id"].isin(platillos_top_80)]
+    daily_df = daily_df[daily_df["platillo_id"].isin(platillos_top_80)]
 
     mapping_df = pd.DataFrame(list(platillo_id_map.items()), columns=["platillo_cve", "platillo_id"])
     mapping_df = mapping_df[mapping_df["platillo_id"].isin(platillos_top_80)].reset_index(drop=True)
 
 
-    weekly_df = weekly_df.fillna(0)
+    daily_df = daily_df.fillna(0)
+    daily_df.drop('platillo_cve', axis=1, inplace=True)
 
-    return weekly_df, mapping_df
+    return daily_df, mapping_df
 
 
 

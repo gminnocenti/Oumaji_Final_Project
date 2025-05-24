@@ -19,6 +19,7 @@ dependencies = [
     "holidays>=0.73",
     "statsmodels>=0.14.4",
     "mlflow>=2.22.0",
+    "lightgbm>=4.6.0",
 ]
 
 [project.scripts]
