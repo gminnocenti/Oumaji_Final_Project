@@ -185,6 +185,22 @@ def train_test_split_demand(df_demand: pd.DataFrame) -> tuple:
 
 def lightgbm_pca(X_train_demand: pd.DataFrame, y_train_demand: pd.Series, X_test_demand: pd.DataFrame, y_test_demand: pd.Series, occupancy_results: pd.DataFrame, horizon: int, dishes_mapping: pd.DataFrame) -> pd.DataFrame:
 
+    """
+    Train a LighGBM Model and test it using the occupancy results from the SARIMAX model.
+    It also generates intervals for the predictions using the MAE of the training set of each 'platillo_id'.
+    It also logs the model and its metrics using MLflow.
+    Args:
+        X_train_demand (pd.DataFrame): Training features.
+        y_train_demand (pd.Series): Training target variable.
+        X_test_demand (pd.DataFrame): Testing features.
+        y_test_demand (pd.Series): Testing target variable.
+        occupancy_results (pd.DataFrame): Results from the SARIMAX model.
+        horizon (int): Number of days to forecast.
+        dishes_mapping (pd.DataFrame): Mapping of dish IDs to dish names.
+    Returns:
+        pd.DataFrame: DataFrame containing the true and predicted demand values for the test set.
+    """
+
     occup_vals = occupancy_results['y_pred'].values
     n_platillos = X_test_demand['platillo_id'].nunique()
     X_test_demand['ocupacion'] = np.tile(occup_vals, n_platillos)
