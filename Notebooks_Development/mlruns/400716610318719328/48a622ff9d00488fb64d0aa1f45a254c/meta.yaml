@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/400716610318719328/48a622ff9d00488fb64d0aa1f45a254c/artifacts
+end_time: 1748114072716
+entry_point_name: ''
+experiment_id: '400716610318719328'
+lifecycle_stage: active
+run_id: 48a622ff9d00488fb64d0aa1f45a254c
+run_name: puzzled-newt-659
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748114068721
+status: 3
+tags: []
+user_id: axllopez

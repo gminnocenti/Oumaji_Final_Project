@@ -1,0 +1,36 @@
+artifact_path: model
+flavors:
+  mlforecast:
+    code: null
+    mlforecast_version: 1.0.2
+    pickled_model: mlforecast-model
+    serialization_format: cloudpickle
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlforecast.flavor
+    model_path: mlforecast-model
+    python_version: 3.11.8
+is_signature_from_type_hint: false
+mlflow_version: 2.22.0
+model_uuid: 4a426d19dd0b4aa5810192c1afa15286
+prompts: null
+run_id: 48a622ff9d00488fb64d0aa1f45a254c
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "platillo_id", "required": true}, {"type": "datetime",
+    "name": "fecha", "required": true}, {"type": "long", "name": "ocupacion", "required":
+    true}, {"type": "long", "name": "dia_festivo", "required": true}]'
+  outputs: '[{"type": "long", "name": "platillo_id", "required": true}, {"type": "datetime",
+    "name": "fecha", "required": true}, {"type": "double", "name": "lgb", "required":
+    true}, {"type": "float", "name": "xgb", "required": true}, {"type": "double",
+    "name": "catboost", "required": true}, {"type": "double", "name": "randomforest",
+    "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-05-24 19:14:28.824642'
