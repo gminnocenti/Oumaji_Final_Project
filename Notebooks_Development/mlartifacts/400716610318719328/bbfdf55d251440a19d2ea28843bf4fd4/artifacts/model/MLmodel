@@ -1,0 +1,36 @@
+artifact_path: model
+flavors:
+  lightgbm:
+    code: null
+    data: model.pkl
+    lgb_version: 4.6.0
+    model_class: lightgbm.sklearn.LGBMRegressor
+  python_function:
+    data: model.pkl
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.lightgbm
+    python_version: 3.11.8
+is_signature_from_type_hint: false
+mlflow_version: 2.22.0
+model_size_bytes: 8854778
+model_uuid: 4ef1804ffbbf4a6592b10a5e2cbc8e75
+prompts: null
+run_id: bbfdf55d251440a19d2ea28843bf4fd4
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": "lag_1", "required": true}, {"type": "double",
+    "name": "lag_7", "required": true}, {"type": "long", "name": "ocupacion", "required":
+    true}, {"type": "long", "name": "dia_semana", "required": true}, {"type": "long",
+    "name": "dia_festivo", "required": true}, {"type": "double", "name": "pca_emb_0",
+    "required": true}, {"type": "double", "name": "pca_emb_1", "required": true},
+    {"type": "double", "name": "pca_emb_2", "required": true}]'
+  outputs: '[{"type": "double", "name": "cantidad", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-05-24 19:54:16.313883'
