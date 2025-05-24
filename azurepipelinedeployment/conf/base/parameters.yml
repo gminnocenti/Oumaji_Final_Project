@@ -1,0 +1,26 @@
+numeric_columns_reservations:
+  - h_num_per
+  - aa_h_num_per
+  - h_num_adu
+  - aa_h_num_adu
+  - h_num_men
+  - aa_h_num_men
+  - h_num_noc
+  - aa_h_num_noc
+  - h_tot_hab
+  - aa_h_tot_hab
+  - Cliente_Disp
+  - aa_Cliente_Disp
+  - h_tfa_total
+  - aa_h_tfa_total
+
+numeric_columns_dishes:
+  - 'hora_alta'
+  - 'HORA_MIN_SEG'
+  - 'HORA_MIN_SEG_sda'
+  - 'importe'
+  - 'importe_ali'
+  - 'importe_beb'
+  - 'monto_total'
+  - 'impto'
+  - 'Total_Sin_Impuestos'

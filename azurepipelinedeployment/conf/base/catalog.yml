@@ -1,0 +1,30 @@
+# Here you can define all your datasets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+iar_reservaciones:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/01_raw/iar_Reservaciones-1.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+iaab_Detalles_Vtas:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/01_raw/iaab_Detalles_Vtas-1.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+results_occupancy:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/07_model_output/results_occupancy-1.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False

@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "azurepipelinedeployment"
+version = "0.1"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "kedro~=0.19.12",
+  "kedro-datasets[pandas-csvdataset,pandas-parquetdataset]>=3.0",
+  "scikit-learn~=1.5.1",
+  "azure-identity>=1.14.0",
+  "azure-keyvault-secrets>=4.7.0",
+  "adlfs>=0.10.0",
+  "holidays>=0.73",
+  "statsmodels>=0.14.4",
+
+  # ─── MLflow & Kedro-MLflow hooks ──────────────────────────────────────────
+  "mlflow>=2.5.0",               # core MLflow machinery
+  "kedro-mlflow>=0.7.0",         # Kedro hooks to log params/metrics/artifacts
+  # ─── Azure ML’s MLflow integration ────────────────────────────────────
+  "azureml-mlflow>=1.47.0"       # lets MLflow talk to your Azure ML workspace
+]
+
+[project.optional-dependencies]
+jupyter = [
+  "ipython>=8.10",
+  "jupyterlab>=3.0",
+  "notebook",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.kedro]
+package_name = "azurepipelinedeployment"
+project_name = "azurepipelinedeployment"
+kedro_init_version = "0.19.12"
+tools = "['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure']"
+example_pipeline = "True"
+source_dir = "src"
+
+[tool.pytest.ini_options]
+addopts = """
+--cov-report term-missing \
+--cov src/azurepipelinedeployment -ra
+"""
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+exclude_lines = [
+  "pragma: no cover",
+  "raise NotImplementedError",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff]
+line-length = 88
+show-fixes = true
+select = [
+  "F",   # Pyflakes
+  "W",   # pycodestyle
+  "E",   # pycodestyle
+  "I",   # isort
+  "UP",  # pyupgrade
+  "PL",  # Pylint
+  "T201",# Print Statement
+]
+ignore = ["E501"]
+
+[tool.kedro_telemetry]
+project_id = "7d980c091fa2469597f46878dbcd7079"

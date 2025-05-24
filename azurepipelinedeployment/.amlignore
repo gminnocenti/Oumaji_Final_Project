@@ -1,0 +1,9 @@
+# Exclude the job spec (and any other top-level yml with secrets)
+azureml.yml
+
+# If you keep other credential files around:
+*.key
+*.pem
+.env*
+.venv
+uv.lock
