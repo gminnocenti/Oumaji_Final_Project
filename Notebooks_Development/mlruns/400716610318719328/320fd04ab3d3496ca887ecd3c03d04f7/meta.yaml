@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/400716610318719328/320fd04ab3d3496ca887ecd3c03d04f7/artifacts
+end_time: 1748116354462
+entry_point_name: ''
+experiment_id: '400716610318719328'
+lifecycle_stage: active
+run_id: 320fd04ab3d3496ca887ecd3c03d04f7
+run_name: enthused-pig-795
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748116350419
+status: 3
+tags: []
+user_id: axllopez
