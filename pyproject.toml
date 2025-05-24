@@ -21,4 +21,6 @@ dependencies = [
     "lightgbm>=4.6.0",
     "statsmodels>=0.14.4",
     "mlforecast>=1.0.2",
+    "xgboost>=2.1.4",
+    "catboost>=1.2.8",
 ]
