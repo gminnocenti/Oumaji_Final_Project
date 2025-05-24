@@ -20,4 +20,5 @@ dependencies = [
     "holidays>=0.73",
     "lightgbm>=4.6.0",
     "statsmodels>=0.14.4",
+    "mlforecast>=1.0.2",
 ]
