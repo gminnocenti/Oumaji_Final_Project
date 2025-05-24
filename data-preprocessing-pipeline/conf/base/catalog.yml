@@ -1,0 +1,40 @@
+# Here you can define all your datasets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+iar_reservaciones:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/iar_reservaciones.csv
+
+iaab_Detalles_Vtas:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/iaab_Detalles_Vtas.csv
+
+iaab_Platillos:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/iaab_Platillos.csv
+
+data_cleaned_reservations:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/df_cleaned_reservations.csv
+
+data_cleaned_dishes:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/df_cleaned_dishes.csv
+
+daily_occupancy:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/daily_occupancy.csv
+
+weekly_demand:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/weekly_demand.csv
+
+dishes_mapping:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/dishes_mapping.csv
+
+results_occupancy:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/occupancy_results.csv
+
