@@ -1,6 +1,6 @@
 ##########################
 # KEDRO PROJECT
-
+uv.lock
 # ignore all local configuration
 conf/local/**
 !conf/local/.gitkeep
