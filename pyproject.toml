@@ -24,3 +24,8 @@ dependencies = [
     "xgboost>=2.1.4",
     "catboost>=1.2.8",
 ]
+
+[tool.uv.workspace]
+members = [
+    "front_end_dashboard_and_API",
+]
