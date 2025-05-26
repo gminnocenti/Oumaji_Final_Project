@@ -16,6 +16,7 @@ dependencies = [
   "adlfs>=0.10.0",
   "holidays>=0.73",
   "statsmodels>=0.14.4",
+  "lightgbm>=4.6.0",
 
   # ─── MLflow & Kedro-MLflow hooks ──────────────────────────────────────────
   "mlflow>=2.5.0",               # core MLflow machinery
