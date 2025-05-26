@@ -38,7 +38,7 @@ def train_test_split_occupancy(df_occupancy: pd.DataFrame) -> tuple:
     X = df_occupancy[exog_cols]
 
     """
-    
+
     horizonte = 30
     y_train = y.iloc[:-horizonte]
     y_test = y.iloc[-horizonte:]
@@ -77,26 +77,18 @@ def sarimax(X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
 
     modelo_exog_fit = modelo_exog.fit(disp=False)
 
-    predicciones_exog = modelo_exog_fit.forecast(steps=30, exog=X)
-
+    #predicciones_exog = modelo_exog_fit.forecast(steps=30, exog=X)
     #predicciones_exog.index = y_test.index  # Para que los índices coincidan
-    signature = infer_signature(X, modelo_exog_fit.forecast(steps=30, exog=X))
     input_example = X.tail(5)
+    signature = infer_signature(input_example, modelo_exog_fit.forecast(steps=5, exog=input_example))
 
-    predicciones_exog = np.ceil(predicciones_exog)
-    mae = mean_absolute_error(y, predicciones_exog)
-    mpe = ((y - predicciones_exog) / y).abs().mean() * 100
-    rmse = root_mean_squared_error(y, predicciones_exog)
-
-    print(f"MAE: {mae:.2f}")
-    print(f"MPE: {mpe:.2f}%")
-    print(f"RMSE: {rmse:.2f}")
-
+    '''
     results_occupancy = (
         pd.DataFrame({"y_true": y, "y_pred": predicciones_exog})
         .reset_index()
         .rename(columns={"index": "fecha"})
     )
+    '''
 
     with mlflow.start_run(run_name="train_evaluate_sarimax_model"):
 
@@ -104,15 +96,13 @@ def sarimax(X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
         mlflow.log_param("seasonal_order", seasonal_order)
         mlflow.log_param("enforce_stationarity", False)
         mlflow.log_param("enforce_invertibility", False)
-        mlflow.log_metric("MAE", mae)
-        mlflow.log_metric("MPE", mpe)
-        mlflow.log_metric("RMSE", rmse)
+        #mlflow.log_metric("MAE", mae)
+        #mlflow.log_metric("MPE", mpe)
+        #mlflow.log_metric("RMSE", rmse)
         mlflow.statsmodels.log_model(modelo_exog_fit, "model",
                         registered_model_name="SARIMAX",
                         signature=signature,
                         input_example=input_example)
-
-    return results_occupancy
 
 def train_test_split_demand(df_demand: pd.DataFrame) -> tuple:
 
@@ -142,8 +132,8 @@ def train_test_split_demand(df_demand: pd.DataFrame) -> tuple:
     df_demand['dia_festivo'].astype('category')
     df_demand['dia_semana'].astype('category')
     df_demand.drop('monto_total', axis=1, inplace=True)
-    
-    
+
+
     #horizon = 30
     #train_df = df_demand.drop(test_df.index)
 
@@ -177,13 +167,13 @@ def train_test_split_demand(df_demand: pd.DataFrame) -> tuple:
     )
     emb_df['platillo_id'] = stats_df['platillo_id']
 
-    demand_df = demand_df.merge(emb_df, on='platillo_id')
+    df_demand = df_demand.merge(emb_df, on='platillo_id')
     #test_df = test_df.merge(emb_df_train, on='platillo_id')
 
     feature_cols = ['fecha','platillo_id','lag_1','lag_7','ocupacion','dia_semana','dia_festivo'] + [f'pca_emb_{i}' for i in range(k)]
 
-    X_demand = demand_df[feature_cols]
-    y_demand = demand_df['cantidad']
+    X_demand = df_demand[feature_cols]
+    y_demand = df_demand['cantidad']
     #X_test_demand  = test_df[feature_cols]
     #y_test_demand  = test_df['cantidad']
 
@@ -230,8 +220,8 @@ def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series, dishes_mapping: pd
 
     preds = model.predict(X_demand)
     preds = np.floor(preds)
-    mae  = mean_absolute_error(y_demand, preds)
-    rmse = (root_mean_squared_error(y_demand, preds))
+    #mae  = mean_absolute_error(y_demand, preds)
+    #rmse = (root_mean_squared_error(y_demand, preds))
     #print(f"MAE en últimos {horizon} días: {mae:.2f}")
     #print(f"RMSE en últimos {horizon} días: {rmse:.2f}")
 
@@ -249,33 +239,32 @@ def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series, dishes_mapping: pd
     #results_demand = X_test_demand.copy()
     #results_demand['cantidad'] = y_test_demand.values
     #results_demand['pred'] = preds
-    X_demand['mae_platillo'] = X_demand['platillo_id'].map(mae_per_plt)
+    #X_demand['mae_platillo'] = X_demand['platillo_id'].map(mae_per_plt)
 
-    X_demand['lower'] = X_demand['pred'] - X_demand['mae_platillo']
-    X_demand['upper'] = X_demand['pred'] + X_demand['mae_platillo']
-
+    #X_demand['lower'] = X_demand['pred'] - X_demand['mae_platillo']
+    #X_demand['upper'] = X_demand['pred'] + X_demand['mae_platillo']
 
     # Mlflow signature
     preds_df = pd.DataFrame(preds, columns=["cantidad"])
     signature = infer_signature(X_demand, preds_df)
 
     #results_demand.drop(['lag_1','lag_7','dia_semana','dia_festivo','pca_emb_0','pca_emb_1','pca_emb_2'], axis = 1, inplace = True)
-    
-    results_demand = X_demand.copy()
-    results_demand = results_demand.merge(dishes_mapping, on='platillo_id', how='left')
+
+    #results_demand = X_demand.copy()
+    #results_demand = results_demand.merge(dishes_mapping, on='platillo_id', how='left')
     #dates = occupancy_results['fecha'].values
     #n_platillos = results_demand['platillo_id'].nunique()
     #results_demand['fecha'] = np.tile(dates, n_platillos)
-    results_demand.drop('platillo_id', axis=1, inplace=True)
+    #results_demand.drop('platillo_id', axis=1, inplace=True)
 
 
 
     with mlflow.start_run(run_name="train_evaluate_lightgbm_model"):
         mlflow.log_params({f"data.{k}": v for k, v in params.items()})
-        mlflow.log_metrics({
-        "MAE": mae,
-        "RMSE": rmse
-            })
+        #mlflow.log_metrics({
+        #"MAE": mae,
+        #"RMSE": rmse
+        #    })
         mlflow.lightgbm.log_model(
         lgb_model = model,
         artifact_path="model",
@@ -285,7 +274,7 @@ def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series, dishes_mapping: pd
             )
 
 
-    return results_demand
+    return mae_per_plt
 
 
 
