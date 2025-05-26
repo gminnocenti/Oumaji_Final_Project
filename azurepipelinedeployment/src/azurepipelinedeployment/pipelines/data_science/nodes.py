@@ -37,15 +37,19 @@ def train_test_split_occupancy(df_occupancy: pd.DataFrame) -> tuple:
     exog_cols = ['dia_festivo', 'lag_1', 'lag_2', 'lag_4']
     X = df_occupancy[exog_cols]
 
+    """
+    
     horizonte = 30
     y_train = y.iloc[:-horizonte]
     y_test = y.iloc[-horizonte:]
     X_train = X.iloc[:-horizonte]
     X_test = X.iloc[-horizonte:]
 
-    return X_train, X_test, y_train, y_test
+    """
 
-def sarimax(X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_test: pd.Series) -> pd.DataFrame:
+    return X, y
+
+def sarimax(X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
 
     """
     Fits a SARIMAX model to the training data and forecasts the next 30 days.
@@ -63,8 +67,8 @@ def sarimax(X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_t
     seasonal_order = (1, 0, 1, 7)
 
     modelo_exog = SARIMAX(
-    y_train,
-    exog=X_train,
+    y,
+    exog=X,
     order=order,
     seasonal_order=seasonal_order,
     enforce_stationarity=False,
@@ -73,22 +77,23 @@ def sarimax(X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_t
 
     modelo_exog_fit = modelo_exog.fit(disp=False)
 
-    predicciones_exog = modelo_exog_fit.forecast(steps=30, exog=X_test)
-    predicciones_exog.index = y_test.index  # Para que los índices coincidan
-    signature = infer_signature(X_train, modelo_exog_fit.forecast(steps=30, exog=X_test))
-    input_example = X_test.head(1)
+    predicciones_exog = modelo_exog_fit.forecast(steps=30, exog=X)
+
+    #predicciones_exog.index = y_test.index  # Para que los índices coincidan
+    signature = infer_signature(X, modelo_exog_fit.forecast(steps=30, exog=X))
+    input_example = X.tail(5)
 
     predicciones_exog = np.ceil(predicciones_exog)
-    mae = mean_absolute_error(y_test, predicciones_exog)
-    mpe = ((y_test - predicciones_exog) / y_test).abs().mean() * 100
-    rmse = root_mean_squared_error(y_test, predicciones_exog)
+    mae = mean_absolute_error(y, predicciones_exog)
+    mpe = ((y - predicciones_exog) / y).abs().mean() * 100
+    rmse = root_mean_squared_error(y, predicciones_exog)
 
     print(f"MAE: {mae:.2f}")
     print(f"MPE: {mpe:.2f}%")
     print(f"RMSE: {rmse:.2f}")
 
     results_occupancy = (
-        pd.DataFrame({"y_true": y_test, "y_pred": predicciones_exog})
+        pd.DataFrame({"y_true": y, "y_pred": predicciones_exog})
         .reset_index()
         .rename(columns={"index": "fecha"})
     )
@@ -137,12 +142,13 @@ def train_test_split_demand(df_demand: pd.DataFrame) -> tuple:
     df_demand['dia_festivo'].astype('category')
     df_demand['dia_semana'].astype('category')
     df_demand.drop('monto_total', axis=1, inplace=True)
-    horizon = 30
-    test_df = df_demand.groupby('platillo_id').tail(horizon)
-    train_df = df_demand.drop(test_df.index)
+    
+    
+    #horizon = 30
+    #train_df = df_demand.drop(test_df.index)
 
     stats = []
-    for pid, g in train_df.groupby('platillo_id'):
+    for pid, g in df_demand.groupby('platillo_id'):
         s = g.sort_values('fecha')['cantidad']
         stats.append({
             'platillo_id':    pid,
@@ -163,27 +169,27 @@ def train_test_split_demand(df_demand: pd.DataFrame) -> tuple:
     cum_var = np.cumsum(pca_dummy.explained_variance_ratio_)
     k = np.searchsorted(cum_var, 0.95) + 1
     pca = PCA(n_components=k, random_state=42).fit(X_train_stats)
-    emb_train = pca.transform(X_train_stats)
+    embedddings = pca.transform(X_train_stats)
 
-    emb_df_train = pd.DataFrame(
-        emb_train,
+    emb_df = pd.DataFrame(
+        embedddings,
         columns=[f'pca_emb_{i}' for i in range(k)]
     )
-    emb_df_train['platillo_id'] = stats_df['platillo_id']
+    emb_df['platillo_id'] = stats_df['platillo_id']
 
-    train_df = train_df.merge(emb_df_train, on='platillo_id')
-    test_df = test_df.merge(emb_df_train, on='platillo_id')
+    demand_df = demand_df.merge(emb_df, on='platillo_id')
+    #test_df = test_df.merge(emb_df_train, on='platillo_id')
 
-    feature_cols = ['platillo_id','lag_1','lag_7','ocupacion','dia_semana','dia_festivo'] + [f'pca_emb_{i}' for i in range(k)]
+    feature_cols = ['fecha','platillo_id','lag_1','lag_7','ocupacion','dia_semana','dia_festivo'] + [f'pca_emb_{i}' for i in range(k)]
 
-    X_train_demand = train_df[feature_cols]
-    y_train_demand = train_df['cantidad']
-    X_test_demand  = test_df[feature_cols]
-    y_test_demand  = test_df['cantidad']
+    X_demand = demand_df[feature_cols]
+    y_demand = demand_df['cantidad']
+    #X_test_demand  = test_df[feature_cols]
+    #y_test_demand  = test_df['cantidad']
 
-    return X_train_demand, X_test_demand, y_train_demand, y_test_demand, horizon
+    return X_demand, y_demand
 
-def lightgbm_pca(X_train_demand: pd.DataFrame, y_train_demand: pd.Series, X_test_demand: pd.DataFrame, y_test_demand: pd.Series, occupancy_results: pd.DataFrame, horizon: int, dishes_mapping: pd.DataFrame) -> pd.DataFrame:
+def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series, dishes_mapping: pd.DataFrame) -> pd.DataFrame:
 
     """
     Train a LighGBM Model and test it using the occupancy results from the SARIMAX model.
@@ -201,9 +207,9 @@ def lightgbm_pca(X_train_demand: pd.DataFrame, y_train_demand: pd.Series, X_test
         pd.DataFrame: DataFrame containing the true and predicted demand values for the test set.
     """
 
-    occup_vals = occupancy_results['y_pred'].values
-    n_platillos = X_test_demand['platillo_id'].nunique()
-    X_test_demand['ocupacion'] = np.tile(occup_vals, n_platillos)
+    #occup_vals = occupancy_results['y_pred'].values
+    #n_platillos = X_test_demand['platillo_id'].nunique()
+    #X_test_demand['ocupacion'] = np.tile(occup_vals, n_platillos)
 
     params = {'objective':'tweedie','metric':'rmse','verbosity':-1, "bagging_fraction": 0.8,
                 "feature_fraction": 0.8,
@@ -216,49 +222,50 @@ def lightgbm_pca(X_train_demand: pd.DataFrame, y_train_demand: pd.Series, X_test
 
     model = LGBMRegressor(**params)
     model.fit(
-        X_train_demand,
-        y_train_demand,
-        eval_set=[(X_test_demand, y_test_demand)],
+        X_demand,
+        y_demand,
+        #eval_set=[(X_demand, y_demand)],
         eval_metric='rmse'
     )
 
-    preds = model.predict(X_test_demand)
+    preds = model.predict(X_demand)
     preds = np.floor(preds)
-    mae  = mean_absolute_error(y_test_demand, preds)
-    rmse = (root_mean_squared_error(y_test_demand, preds))
-    print(f"MAE en últimos {horizon} días: {mae:.2f}")
-    print(f"RMSE en últimos {horizon} días: {rmse:.2f}")
+    mae  = mean_absolute_error(y_demand, preds)
+    rmse = (root_mean_squared_error(y_demand, preds))
+    #print(f"MAE en últimos {horizon} días: {mae:.2f}")
+    #print(f"RMSE en últimos {horizon} días: {rmse:.2f}")
 
-    preds_train = model.predict(X_train_demand)
-    dummy_df = X_train_demand.copy()
-    dummy_df['y_true'] = y_train_demand.values
-    dummy_df['y_pred'] = preds_train
+    #preds_train = model.predict(X_train_demand)
+    #dummy_df = X_demand.copy()
+    X_demand['cantidad'] = y_demand.values
+    X_demand['y_pred'] = preds
 
     mae_per_plt = (
-    dummy_df
+    X_demand
     .groupby('platillo_id')
-    .apply(lambda g: np.floor(mean_absolute_error(g['y_true'], g['y_pred'])))
+    .apply(lambda g: np.floor(mean_absolute_error(g['cantidad'], g['y_pred'])))
     )
 
-    results_demand = X_test_demand.copy()
-    results_demand['cantidad'] = y_test_demand.values
-    results_demand['pred'] = preds
-    results_demand['mae_platillo'] = results_demand['platillo_id'].map(mae_per_plt)
+    #results_demand = X_test_demand.copy()
+    #results_demand['cantidad'] = y_test_demand.values
+    #results_demand['pred'] = preds
+    X_demand['mae_platillo'] = X_demand['platillo_id'].map(mae_per_plt)
 
-    results_demand['lower'] = results_demand['pred'] - results_demand['mae_platillo']
-    results_demand['upper'] = results_demand['pred'] + results_demand['mae_platillo']
+    X_demand['lower'] = X_demand['pred'] - X_demand['mae_platillo']
+    X_demand['upper'] = X_demand['pred'] + X_demand['mae_platillo']
 
 
     # Mlflow signature
-    preds_df = pd.DataFrame(preds_train, columns=["cantidad"])
-    signature = infer_signature(X_train_demand, preds_df)
+    preds_df = pd.DataFrame(preds, columns=["cantidad"])
+    signature = infer_signature(X_demand, preds_df)
 
-    results_demand.drop(['lag_1','lag_7','dia_semana','dia_festivo','pca_emb_0','pca_emb_1','pca_emb_2'], axis = 1, inplace = True)
-
+    #results_demand.drop(['lag_1','lag_7','dia_semana','dia_festivo','pca_emb_0','pca_emb_1','pca_emb_2'], axis = 1, inplace = True)
+    
+    results_demand = X_demand.copy()
     results_demand = results_demand.merge(dishes_mapping, on='platillo_id', how='left')
-    dates = occupancy_results['fecha'].values
-    n_platillos = results_demand['platillo_id'].nunique()
-    results_demand['fecha'] = np.tile(dates, n_platillos)
+    #dates = occupancy_results['fecha'].values
+    #n_platillos = results_demand['platillo_id'].nunique()
+    #results_demand['fecha'] = np.tile(dates, n_platillos)
     results_demand.drop('platillo_id', axis=1, inplace=True)
 
 
@@ -273,7 +280,7 @@ def lightgbm_pca(X_train_demand: pd.DataFrame, y_train_demand: pd.Series, X_test
         lgb_model = model,
         artifact_path="model",
         signature=signature,
-        input_example = X_train_demand,
+        input_example = X_demand,
         registered_model_name = "LightGBM"
             )
 
