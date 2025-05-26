@@ -63,6 +63,8 @@ def sarimax(X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
         pd.DataFrame: DataFrame containing the true and predicted occupancy values for the test set.
     """
 
+    y = y.loc[X.index]
+
     order = (0, 0, 2) # p, d, q
     seasonal_order = (1, 0, 1, 7)
 
