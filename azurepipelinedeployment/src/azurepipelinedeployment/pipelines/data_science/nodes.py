@@ -250,7 +250,7 @@ def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series) -> pd.DataFrame:
 
     # Mlflow signature
     preds_df = pd.DataFrame(preds, columns=["cantidad"])
-    signature = infer_signature(X_demand, preds_df)
+    signature = infer_signature(input_example_df, preds_df)
 
     #results_demand.drop(['lag_1','lag_7','dia_semana','dia_festivo','pca_emb_0','pca_emb_1','pca_emb_2'], axis = 1, inplace = True)
 
