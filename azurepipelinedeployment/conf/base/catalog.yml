@@ -83,3 +83,12 @@ X_demand:
     account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
   save_args:
     index: False
+
+mae_per_plt:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/08_reporting/mae_per_plt.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False

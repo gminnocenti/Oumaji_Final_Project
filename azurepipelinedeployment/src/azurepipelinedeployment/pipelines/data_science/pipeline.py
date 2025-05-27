@@ -19,7 +19,7 @@ def create_pipeline(**kwargs) -> Pipeline:
         node(
             func = sarimax,
             inputs = ["X","y"],
-            outputs = "results_occupancy",
+            outputs = None,
             name = "sarimax_model"
         ),
         node(
@@ -30,8 +30,8 @@ def create_pipeline(**kwargs) -> Pipeline:
         ),
         node(
             func = lightgbm_pca,
-            inputs = ["X_demand", "y_demand","dishes_mapping"],
-            outputs = "results_demand",
+            inputs = ["X_demand", "y_demand"],
+            outputs = "mae_per_plt",
             name = "lightgbm_model"
         )
 
