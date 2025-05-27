@@ -172,7 +172,7 @@ def train_test_split_demand(df_demand: pd.DataFrame) -> tuple:
     df_demand = df_demand.merge(emb_df, on='platillo_id')
     #test_df = test_df.merge(emb_df_train, on='platillo_id')
 
-    feature_cols = ['fecha','platillo_id','lag_1','lag_7','ocupacion','dia_semana','dia_festivo'] + [f'pca_emb_{i}' for i in range(k)]
+    feature_cols = ['platillo_id','lag_1','lag_7','ocupacion','dia_semana','dia_festivo'] + [f'pca_emb_{i}' for i in range(k)]
 
     X_demand = df_demand[feature_cols]
     y_demand = df_demand['cantidad']
