@@ -30,8 +30,8 @@ def create_pipeline(**kwargs) -> Pipeline:
         ),
         node(
             func = lightgbm_pca,
-            inputs = ["X_demand", "y_demand","dishes_mapping"],
-            outputs = ["mae_per_plt"],
+            inputs = ["X_demand", "y_demand"],
+            outputs = "mae_per_plt",
             name = "lightgbm_model"
         )
 

@@ -27,7 +27,7 @@ def train_test_split_occupancy(df_occupancy: pd.DataFrame) -> tuple:
 
     df_occupancy['fecha'] = pd.to_datetime(df_occupancy['fecha'])
     df_occupancy = df_occupancy.sort_values('fecha')
-    df_occupancy.set_index('fecha', inplace=True)
+    #df_occupancy.set_index('fecha', inplace=True)
 
     # Variable objetivo
     y = df_occupancy['ocupacion']
@@ -181,7 +181,7 @@ def train_test_split_demand(df_demand: pd.DataFrame) -> tuple:
 
     return X_demand, y_demand
 
-def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series, dishes_mapping: pd.DataFrame) -> pd.DataFrame:
+def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series) -> pd.DataFrame:
 
     """
     Train a LighGBM Model and test it using the occupancy results from the SARIMAX model.
@@ -236,8 +236,9 @@ def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series, dishes_mapping: pd
     X_demand
     .groupby('platillo_id')
     .apply(lambda g: np.floor(mean_absolute_error(g['cantidad'], g['y_pred'])))
+    .to_frame(name="mae_per_plt")
+    .reset_index()
     )
-
     #results_demand = X_test_demand.copy()
     #results_demand['cantidad'] = y_test_demand.values
     #results_demand['pred'] = preds
