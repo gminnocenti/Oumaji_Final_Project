@@ -229,6 +229,7 @@ def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series) -> pd.DataFrame:
 
     #preds_train = model.predict(X_train_demand)
     #dummy_df = X_demand.copy()
+    input_example_df = X_demand.head(5)
     X_demand['cantidad'] = y_demand.values
     X_demand['y_pred'] = preds
 
@@ -272,7 +273,7 @@ def lightgbm_pca(X_demand: pd.DataFrame, y_demand: pd.Series) -> pd.DataFrame:
         lgb_model = model,
         artifact_path="model",
         signature=signature,
-        input_example = X_demand,
+        input_example = input_example_df,
         registered_model_name = "LightGBM"
             )
 
