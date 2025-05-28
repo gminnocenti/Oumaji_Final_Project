@@ -31,7 +31,7 @@ def create_pipeline(**kwargs) -> Pipeline:
         node(
             func = generate_daily_demand,
             inputs = dict(df="data_cleaned_dishes", df_occupancy="daily_occupancy"),
-            outputs =  ["daily_demand", "dishes_mapping"],
+            outputs =  ["daily_demand", "dishes_mapping","price_df","feature_cols"],
             name = "generate_weekly_demand",
         )
 
