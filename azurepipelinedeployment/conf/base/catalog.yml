@@ -75,14 +75,14 @@ price_df:
   save_args:
     index: False
   
-  occupancy_predictions:
-    type: pandas.CSVDataset
-    filepath: "abfs://tca-blob-storage/08_reporting/occupancy_predictions.csv"
-    credentials:
-      account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
-      account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
-    save_args:
-      index: False
+occupancy_predictions:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/08_reporting/occupancy_predictions.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
 
 
 mae_per_plt:
