@@ -104,7 +104,7 @@ def sarimax(daily_occupancy: pd.DataFrame) -> pd.DataFrame:
 
     occupancy_predictions = pd.DataFrame(
         {"fecha": future_dates, "ocupacion_pred": preds}
-    ).set_index("fecha")
+    )
 
     return occupancy_predictions
 
