@@ -13,7 +13,7 @@ def create_pipeline(**kwargs) -> Pipeline:
         node(
             func = sarimax,
             inputs = "daily_occupancy",
-            outputs = None,
+            outputs = "occupancy_predictions",
             name = "sarimax_model"
         ),
         node(

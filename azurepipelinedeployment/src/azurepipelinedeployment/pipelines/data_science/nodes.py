@@ -10,6 +10,8 @@ import mlflow
 from mlflow.models.signature import infer_signature
 import numpy as np
 from lightgbm import LGBMRegressor
+from pandas.tseries.offsets import DateOffset
+import holidays
 
 def sarimax(daily_occupancy: pd.DataFrame) -> pd.DataFrame:
 
@@ -57,6 +59,53 @@ def sarimax(daily_occupancy: pd.DataFrame) -> pd.DataFrame:
                         registered_model_name="SARIMAX",
                         signature=signature,
                         input_example=input_example)
+
+    h = 30
+    last_date = daily_occupancy['fecha'].iloc[-1]
+
+    # 1. Rango de fechas futuro
+    future_dates = pd.date_range(
+        start=last_date + DateOffset(days=1),
+        periods=h,
+        freq='D'
+    )
+
+    last_year  = last_date.year
+    next_year  = (last_date + DateOffset(days=h)).year
+    mx_holidays = holidays.Mexico(years=range(last_year, next_year + 1))
+    future_holidays = future_dates.normalize().isin(mx_holidays).astype(int)
+
+    exog_future = pd.DataFrame(index=future_dates, columns=exog_cols, dtype=float)
+    exog_future['dia_festivo'] = future_holidays
+
+    y_history = y.copy()
+    preds, lag_trace = [], []
+
+    for idx in future_dates:
+        lag_1 = y_history.iloc[-1]
+        lag_2 = y_history.iloc[-2] if len(y_history) >= 2 else lag_1
+        lag_4 = y_history.iloc[-4] if len(y_history) >= 4 else lag_1
+
+        row_now = {
+            "dia_festivo": int(idx.normalize() in mx_holidays),
+            "lag_1": lag_1,
+            "lag_2": lag_2,
+            "lag_4": lag_4,
+        }
+        row_df = pd.DataFrame(row_now, index=[idx])
+
+        pred = modelo_exog_fit.forecast(steps=1, exog=row_df).iloc[0]
+        preds.append(np.floor(pred))
+        lag_trace.append({**row_now, "pred": pred, "fecha": idx})
+
+        y_history.loc[idx] = pred
+
+
+    occupancy_predictions = pd.DataFrame(
+        {"fecha": future_dates, "ocupacion_pred": preds}
+    ).set_index("fecha")
+
+    return occupancy_predictions
 
 def lightgbm_pca(daily_demand: pd.DataFrame, feature_cols: list) -> pd.DataFrame:
 
@@ -119,7 +168,6 @@ def lightgbm_pca(daily_demand: pd.DataFrame, feature_cols: list) -> pd.DataFrame
 
 
     return mae_per_plt
-
 
 
 
