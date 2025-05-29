@@ -29,6 +29,7 @@ def sarimax(daily_occupancy: pd.DataFrame) -> pd.DataFrame:
         None: The function logs the model using MLflow.
     """
 
+    daily_occupancy['fecha'] = pd.to_datetime(daily_occupancy['fecha'])
     y = daily_occupancy['ocupacion']
     exog_cols = ['dia_festivo', 'lag_1', 'lag_2', 'lag_4']
     X = daily_occupancy[exog_cols]
