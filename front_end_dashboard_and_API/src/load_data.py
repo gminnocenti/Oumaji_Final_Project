@@ -103,6 +103,7 @@ def load_occupancy() -> pd.DataFrame:
     )
     df['fecha'] = pd.to_datetime(df['fecha'])
     return df.set_index('fecha')
+
 @st.cache_data(show_spinner=False)
 def load_occupancy_forecast() -> pd.DataFrame:
     df = download_blob_storage_df(

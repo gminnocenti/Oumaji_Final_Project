@@ -31,7 +31,7 @@ def occupancy_tab_logic(historic_data: pd.DataFrame, forecast_data: pd.DataFrame
         )
 
     with slider_row[1]:
-        st.subheader("Ventada de predicciones")
+        st.subheader("Ventana de predicciones")
         range_fcst = st.slider(
             label="Esto tampoco",
             label_visibility="collapsed",

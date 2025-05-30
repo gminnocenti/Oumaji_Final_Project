@@ -3,17 +3,14 @@
 from pathlib import Path
 import streamlit as st
 from PIL import Image
-from load_data import load_occupancy_csv, load_food_beverage_csv,load_occupancy,load_occupancy_forecast,load_demand,load_pricedf,load_dishes_mapping
+from load_data import load_occupancy_csv,load_occupancy,load_occupancy_forecast,load_demand,load_pricedf,load_dishes_mapping
 # Tabs
 from tabs.occupancy_tab import occupancy_tab_logic
 from tabs.fnb_bi import food_beverage_bi_logic
-from tabs.fnb_forecast_lineplot import fnb_forecast_lineplot_logic
-from tabs.fnb_forecast_barplot import fnb_forecast_barplot_logic
-import sys
-import os
+from tabs.fnb_forecast import fnb_forecast
 repo_path = Path(__file__).resolve().parent.parent
-#web_icon = Image.open(f"{repo_path}/data/page_icon.webp")
-st.set_page_config(page_title="Dashboard TCA", layout="wide")
+web_icon = Image.open("page_icon.webp")
+st.set_page_config(page_title="Dashboard TCA", page_icon = web_icon, layout="wide")
 st.markdown(
     """
 <style>
@@ -31,7 +28,7 @@ try:
     # Ocuppancy
     hist = load_occupancy_csv()
     fcst = load_occupancy_forecast()
-    # Food % Beverage
+    # Food & Beverage
     fnb_hist = load_demand()
     df_ids=load_dishes_mapping()
     df_demand = load_demand()
@@ -40,7 +37,7 @@ try:
 
 except FileNotFoundError:
     st.error(
-        "No se encontraron los archivos. Coloca los archivos en la carpeta 'data/'."
+        "No se encontraron los archivos."
     )
     st.stop()
 
@@ -50,9 +47,9 @@ st.title("OUMAJI MVP Dashboard")
 
 occupancy_tab, fnb_tab_bi, fnb_tab_forecast = st.tabs(
     [
-        "📈  Ocupación en el tiempo",
-        "📊  F&B BI",
-        "🍔  F&B Forecast I",
+        "📈  Ocupación en el tiempo + predicciones",
+        "📊  BI de B&A",
+        "🍔  Predicciones de B&A",
         
     ]
 )
@@ -67,23 +64,4 @@ with fnb_tab_bi:
 
 # === FOOD & BEVERAGE FORECAST ===
 with fnb_tab_forecast:
-    fnb_forecast_barplot_logic(df_demand=df_demand,y_pred_30=y_pred_30,df_ids=df_ids,price_df=price_df)
-
-# === FOOD & BEVERAGE FORECAST 2 ===
-#with fnb_tab_forecast2:
-#    fnb_forecast_lineplot_logic(
-#        food_beverage_historic_data=fnb_hist, food_beverage_forecast_data=fnb_fcst
-#    )
-
-
-########################
-# Pie de página
-# with st.expander("About this dashboard", expanded=False):
-#     st.markdown(
-#         """
-# * **Data source**: internal PMS exports for actuals, plus your preferred time-series model for forecasts.
-# * **Flash-cards**: summed guests over the selected ranges (you can switch to *average occupancy rate* if that’s more meaningful).
-# * **Filters** act instantly; no “apply” button needed thanks to Pandas boolean indexing.
-# * **Visuals**: Plotly Dark template for quick PowerBI-like polish; dotted line = future.
-# """
-#     )
+    fnb_forecast(df_demand=df_demand,y_pred_30=y_pred_30,df_ids=df_ids,price_df=price_df)
