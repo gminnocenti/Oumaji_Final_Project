@@ -48,12 +48,12 @@ except FileNotFoundError:
 # === STREAMLIT UI ===
 st.title("OUMAJI MVP Dashboard")
 
-occupancy_tab, fnb_tab_bi, fnb_tab_forecast, fnb_tab_forecast2 = st.tabs(
+occupancy_tab, fnb_tab_bi, fnb_tab_forecast = st.tabs(
     [
         "📈  Ocupación en el tiempo",
         "📊  F&B BI",
         "🍔  F&B Forecast I",
-        "🍕  F&B Forecast II",
+        
     ]
 )
 
