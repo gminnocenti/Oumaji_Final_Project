@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from tabs.make_predictions import prediction_preprocessing, get_prediction_df
+from helpers import resample_df_column
 
 
 def fnb_forecast_barplot_logic(
@@ -14,7 +15,7 @@ def fnb_forecast_barplot_logic(
     """
     Lógica para el tab de pronóstico de platillos (gráfico de barras).
     """
-
+    df_demand["fecha"] = pd.to_datetime(df_demand["fecha"])
     # ──────────────────────  inicialización de estado  ──────────────────────
     if "pred_fc" not in st.session_state:
         st.session_state.pred_fc = None           # DataFrame con predicciones
@@ -157,20 +158,110 @@ def fnb_forecast_barplot_logic(
             title=f"Top {top_n if top_n != len(fc_agg) else 'todos'} platillos pronosticados por: {fc_metric}",
         )
         st.plotly_chart(fig_fc, use_container_width=True)
+        # Filtros y controles
+    
+    min_all, max_all = (
+        df_demand["fecha"].min(),
+        df_results["fecha"].max(),
+    )
 
-    with table_col:
-        disp_cols = [
-            "fecha",
-            "platillo_cve",
-            "cantidad_pred" if fc_metric == "Unidades" else "monto_total",
-        ]
-        df_disp = fc_filt[disp_cols].sort_values(["fecha", "platillo_cve"])
-        st.dataframe(
-            df_disp,
-            hide_index=True,
-            height=450,
-            column_config={
-                "cantidad_pred": st.column_config.NumberColumn(format="%d"),
-                "monto_total": st.column_config.NumberColumn(format="$%.0f"),
-            },
+    ctrl_row1 = st.columns((3, 1, 1), gap="medium")
+    with ctrl_row1[0]:
+        line_range = st.slider(
+            label="Rango de fechas",
+            min_value=min_all.date(),
+            max_value=max_all.date(),
+            value=(min_all.date(), max_all.date()),
+            step=timedelta(days=1),
+            format="YYYY-MM-DD",
+            key="line_date",
         )
+    with ctrl_row1[1]:
+        line_metric = st.radio(
+            "Métrica",
+            options=("Unidades", "Ganancias"),
+            horizontal=True,
+            key="line_metric",
+        )
+    with ctrl_row1[2]:
+        granularity = st.radio(
+            "Granularidad",
+            options=("Diaria", "Semanal"),
+            horizontal=True,
+            key="line_gran",
+        )
+
+    # Filtrado de datos según rango de fechas
+    start_ts, end_ts = map(pd.Timestamp, line_range)
+
+    hist_filt = df_demand[
+        df_demand["platillo_cve"].isin(sel_fc_dishes)
+    ].loc[lambda d: d["fecha"].between(start_ts, end_ts)]
+    fcst_filt = df_results[
+        df_results["platillo_cve"].isin(sel_fc_dishes)
+    ].loc[lambda d: d["fecha"].between(start_ts, end_ts)]
+
+    # Hacemos resampling según métrica y granularidad
+    rule = "D" if granularity == "Diaria" else "W-MON"
+    val_col = "cantidad" if line_metric == "Unidades" else "monto_total"
+    y_title = "Cantidad" if line_metric == "Unidades" else "Total de Venta ($)"
+    hover_fmt = ",d" if line_metric == "Unidades" else ",.0f"
+
+    val_col_pred = "cantidad_pred" if line_metric == "Unidades" else "monto_total"
+    hist_rs = resample_df_column(hist_filt, rule, val_col)
+    fcst_rs = resample_df_column(fcst_filt, rule, val_col_pred)
+
+    # ── build line traces ------------------------------------------
+    fig = go.Figure()
+
+    for dish in sel_fc_dishes:
+        # historic trace
+        hd = (
+            hist_rs[hist_rs["platillo_cve"] == dish]
+            if "platillo_cve" in hist_rs
+            else hist_rs.assign(dish_id=hist_filt["platillo_cve"].iloc[0])
+        )
+        fd = (
+            fcst_rs[fcst_rs["platillo_cve"] == dish]
+            if "platillo_cve" in fcst_rs
+            else fcst_rs.assign(dish_id=fcst_filt["platillo_cve"].iloc[0])
+        )
+
+        fig.add_trace(
+            go.Scatter(
+                x=hd["fecha"],
+                y=hd[val_col],
+                mode="lines",
+                name=f"{dish} (hist)",
+                hovertemplate=f"{dish}<br>%{{x|%Y-%m-%d}}<br>%{{y:{hover_fmt}}}<extra></extra>",
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=fd["fecha"],
+                y=fd[val_col_pred],
+                mode="lines",
+                name=f"{dish} (fcst)",
+                line=dict(dash="dot"),
+                hovertemplate=f"{dish}<br>%{{x|%Y-%m-%d}}<br>%{{y:{hover_fmt}}}<extra></extra>",
+            )
+        )
+
+    # Gráfico de líneas!
+    fig.update_layout(
+        template="plotly_dark",
+        height=500,
+        margin=dict(l=10, r=10, t=25, b=10),
+        xaxis_title="Fecha",
+        yaxis_title=y_title,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            title=None,
+        ),
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
