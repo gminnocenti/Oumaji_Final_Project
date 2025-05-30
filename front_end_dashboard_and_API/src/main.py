@@ -3,17 +3,17 @@
 from pathlib import Path
 import streamlit as st
 from PIL import Image
-from load_data import load_occupancy_csv, load_food_beverage_csv
-
+from load_data import load_occupancy_csv, load_food_beverage_csv,load_occupancy,load_occupancy_forecast,load_demand,load_pricedf,load_dishes_mapping
 # Tabs
 from tabs.occupancy_tab import occupancy_tab_logic
 from tabs.fnb_bi import food_beverage_bi_logic
 from tabs.fnb_forecast_lineplot import fnb_forecast_lineplot_logic
 from tabs.fnb_forecast_barplot import fnb_forecast_barplot_logic
-
+import sys
+import os
 repo_path = Path(__file__).resolve().parent.parent
-web_icon = Image.open(f"{repo_path}/data/page_icon.webp")
-st.set_page_config(page_title="Dashboard TCA", page_icon=web_icon, layout="wide")
+#web_icon = Image.open(f"{repo_path}/data/page_icon.webp")
+st.set_page_config(page_title="Dashboard TCA", layout="wide")
 st.markdown(
     """
 <style>
@@ -29,19 +29,15 @@ st.markdown(
 # === CARGA DE DATOS ===
 try:
     # Ocuppancy
-    hist = load_occupancy_csv(
-        f"{repo_path}/data/hotel_occupancy_actual.csv", parse_dates=["date"]
-    )
-    fcst = load_occupancy_csv(
-        f"{repo_path}/data/hotel_occupancy_forecast.csv", parse_dates=["date"]
-    )
+    hist = load_occupancy_csv()
+    fcst = load_occupancy_forecast()
     # Food % Beverage
-    fnb_hist = load_food_beverage_csv(
-        f"{repo_path}/data/fnb_sales_actual.csv", parse_dates=["date"]
-    )
-    fnb_fcst = load_food_beverage_csv(
-        f"{repo_path}/data/fnb_sales_forecast.csv", parse_dates=["date"]
-    )
+    fnb_hist = load_demand()
+    df_ids=load_dishes_mapping()
+    df_demand = load_demand()
+    y_pred_30 = load_occupancy()
+    price_df=load_pricedf()
+
 except FileNotFoundError:
     st.error(
         "No se encontraron los archivos. Coloca los archivos en la carpeta 'data/'."
@@ -67,17 +63,17 @@ with occupancy_tab:
 
 # === FOOD & BEVERAGE BI ===
 with fnb_tab_bi:
-    food_beverage_bi_logic(food_beverage_historic_data=fnb_hist)
+    food_beverage_bi_logic(food_beverage_historic_data=fnb_hist,df_ids=df_ids)
 
 # === FOOD & BEVERAGE FORECAST ===
 with fnb_tab_forecast:
-    fnb_forecast_barplot_logic(food_beverage_forecast_data=fnb_fcst)
+    fnb_forecast_barplot_logic(df_demand=df_demand,y_pred_30=y_pred_30,df_ids=df_ids,price_df=price_df)
 
 # === FOOD & BEVERAGE FORECAST 2 ===
-with fnb_tab_forecast2:
-    fnb_forecast_lineplot_logic(
-        food_beverage_historic_data=fnb_hist, food_beverage_forecast_data=fnb_fcst
-    )
+#with fnb_tab_forecast2:
+#    fnb_forecast_lineplot_logic(
+#        food_beverage_historic_data=fnb_hist, food_beverage_forecast_data=fnb_fcst
+#    )
 
 
 ########################

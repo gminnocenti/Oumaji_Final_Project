@@ -8,11 +8,11 @@ from helpers import resample_df
 
 
 def occupancy_tab_logic(historic_data: pd.DataFrame, forecast_data: pd.DataFrame):
+    forecast_data.rename(columns={"ocupacion_pred": "ocupacion"}, inplace=True)
     # st.subheader("Ocupación real + predicción superpuesta")
-
     # Rango máximo y mínimo de las fechas (historic + forecast)
-    full_min, full_max = historic_data["date"].min(), forecast_data["date"].max()
-    fcst_min, fcst_max = forecast_data["date"].min(), forecast_data["date"].max()
+    full_min, full_max = historic_data["fecha"].min(), forecast_data["fecha"].max()
+    fcst_min, fcst_max = forecast_data["fecha"].min(), forecast_data["fecha"].max()
 
     default_fcst_end = min(fcst_min + timedelta(days=29), fcst_max)
     slider_row = st.columns((1, 1), gap="medium")
@@ -63,9 +63,9 @@ def occupancy_tab_logic(historic_data: pd.DataFrame, forecast_data: pd.DataFrame
     start_fcst, end_fcst = map(pd.Timestamp, range_fcst)
 
     # Filtros base (todavía diario)
-    hist_filt = historic_data[(historic_data["date"].between(start_all, end_all))]
-    fcst_filt = historic_data[(historic_data["date"].between(start_all, end_all))]
-    fcst_zoom = historic_data[(historic_data["date"].between(start_fcst, end_fcst))]
+    hist_filt = historic_data[(historic_data["fecha"].between(start_all, end_all))]
+    fcst_filt = forecast_data[(forecast_data["fecha"].between(start_fcst, end_fcst))]
+    fcst_zoom = forecast_data[(forecast_data["fecha"].between(start_fcst, end_fcst))]
 
     # Aplicamos la misma regla a los 3
     rule = granularity_map[gran_choice]
@@ -80,14 +80,14 @@ def occupancy_tab_logic(historic_data: pd.DataFrame, forecast_data: pd.DataFrame
     with metric_col[0]:
         st.metric(
             "Huéspedes totales",
-            f"{hist_sel['guests'].sum():,}",
+            f"{hist_sel['ocupacion'].sum():,}",
             help="Número total de huéspedes en el periodo seleccionado.",
         )
 
     with metric_col[1]:
         st.metric(
             "Huéspedes pronosticados",
-            f"{fcst_only['guests'].sum():,}",
+            f"{fcst_only['ocupacion'].sum():,}",
             help="Número total de huéspedes pronosticados en el periodo seleccionado.",
         )
 
@@ -103,8 +103,8 @@ def occupancy_tab_logic(historic_data: pd.DataFrame, forecast_data: pd.DataFrame
         # Línea historica
         fig.add_trace(
             go.Scatter(
-                x=hist_sel["date"],
-                y=hist_sel["guests"],
+                x=hist_sel["fecha"],
+                y=hist_sel["ocupacion"],
                 mode="lines",
                 name="Real",
                 hovertemplate="%{x|%b %d, %Y}<br>Guests: %{y:,}<extra></extra>",
@@ -114,8 +114,8 @@ def occupancy_tab_logic(historic_data: pd.DataFrame, forecast_data: pd.DataFrame
         # Línea de pronóstico
         fig.add_trace(
             go.Scatter(
-                x=fcst_sel["date"],
-                y=fcst_sel["guests"],
+                x=fcst_sel["fecha"],
+                y=fcst_sel["ocupacion"],
                 mode="lines",
                 name="Pronosticados",
                 line=dict(dash="dot"),
@@ -142,8 +142,8 @@ def occupancy_tab_logic(historic_data: pd.DataFrame, forecast_data: pd.DataFrame
         fig2 = go.Figure()
         fig2.add_trace(
             go.Scatter(
-                x=fcst_only["date"],
-                y=fcst_only["guests"],
+                x=fcst_only["fecha"],
+                y=fcst_only["ocupacion"],
                 mode="lines+markers",
                 name="Pronosticados",
                 hovertemplate="%{x|%b %d, %Y}<br>Forecast: %{y:,}<extra></extra>",

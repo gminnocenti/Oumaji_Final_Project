@@ -7,10 +7,14 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 
-def food_beverage_bi_logic(food_beverage_historic_data: pd.DataFrame):
+def food_beverage_bi_logic(food_beverage_historic_data: pd.DataFrame,df_ids: pd.DataFrame):
+    food_beverage_historic_data = food_beverage_historic_data.merge(df_ids, how='left', on='platillo_id')
+    food_beverage_historic_data["fecha"] = pd.to_datetime(
+        food_beverage_historic_data["fecha"]
+    )  # Asegura que la fecha sea del tipo datetime
     fnb_min, fnb_max = (
-        food_beverage_historic_data["date"].min(),
-        food_beverage_historic_data["date"].max(),
+        food_beverage_historic_data["fecha"].min(),
+        food_beverage_historic_data["fecha"].max(),
     )
     ctrl1, ctrl2 = st.columns((3, 1), gap="medium")
 
@@ -35,7 +39,7 @@ def food_beverage_bi_logic(food_beverage_historic_data: pd.DataFrame):
         )
 
     # Seleccionador de platillos
-    all_dishes = sorted(food_beverage_historic_data["dish_id"].unique())
+    all_dishes = sorted(food_beverage_historic_data["platillo_cve"].unique())
     with st.expander("✚ Filtrar por ID de platillo", expanded=False):
         sel_dishes = st.multiselect(
             "Elige platillos de tu interés",
@@ -48,22 +52,22 @@ def food_beverage_bi_logic(food_beverage_historic_data: pd.DataFrame):
     # Filtrado de datos segun rango de fechas y platillos seleccionados
     start_fnb, end_fnb = map(pd.Timestamp, date_range)
     filt = food_beverage_historic_data[
-        (food_beverage_historic_data["date"].between(start_fnb, end_fnb))
-        & (food_beverage_historic_data["dish_id"].isin(sel_dishes))
+        (food_beverage_historic_data["fecha"].between(start_fnb, end_fnb))
+        & (food_beverage_historic_data["platillo_cve"].isin(sel_dishes))
     ]
 
     # Métricas atractivas para TCA
     mcol = st.columns(2)
-    mcol[0].metric("Total de unidades vendidas", f"{int(filt['units_sold'].sum()):,}")
-    mcol[1].metric("Ganancias totales", f"${filt['profit'].sum():,.0f} MXN")
+    mcol[0].metric("Total de unidades vendidas", f"{int(filt['cantidad'].sum()):,}")
+    mcol[1].metric("Ganancias totales", f"${filt['monto_total'].sum():,.0f} MXN")
 
     if metric_type == "Unidades vendidas":
         dish_agg = (
-            filt.groupby("dish_id")["units_sold"].sum().sort_values(ascending=False)
+            filt.groupby("platillo_cve")["cantidad"].sum().sort_values(ascending=False)
         )
 
     else:
-        dish_agg = filt.groupby("dish_id")["profit"].sum().sort_values(ascending=False)
+        dish_agg = filt.groupby("platillo_cve")["monto_total"].sum().sort_values(ascending=False)
 
     # Enumeración de opciones para el top N
     raw_sizes = [5, 10, 20, 50, len(dish_agg)]
@@ -87,7 +91,7 @@ def food_beverage_bi_logic(food_beverage_historic_data: pd.DataFrame):
     # Paleta de colores que se repite (24)
     palette = px.colors.qualitative.Light24
     color_map = {
-        dish_id: palette[i % len(palette)] for i, dish_id in enumerate(top_dishes)
+        platillo_cve: palette[i % len(palette)] for i,  platillo_cve in enumerate(top_dishes)
     }
 
     # === GRÁFICAS ===
@@ -139,8 +143,8 @@ def food_beverage_bi_logic(food_beverage_historic_data: pd.DataFrame):
         )
 
         # Preparar dataframe solo con Top N platillos
-        filt_top = filt[filt["dish_id"].isin(top_dishes)].copy()
-        filt_top["weekday"] = filt_top["date"].dt.day_name()
+        filt_top = filt[filt["platillo_cve"].isin(top_dishes)].copy()
+        filt_top["weekday"] = filt_top["fecha"].dt.day_name()
 
         # Agregado por día y platillo
         weekday_order = [
@@ -154,13 +158,13 @@ def food_beverage_bi_logic(food_beverage_historic_data: pd.DataFrame):
         ]
         if metric_type == "Unidades vendidas":
             grouped = (
-                filt_top.groupby(["weekday", "dish_id"])["units_sold"]
+                filt_top.groupby(["weekday", "platillo_cve"])["cantidad"]
                 .sum()
                 .unstack(fill_value=0)
             )
         else:
             grouped = (
-                filt_top.groupby(["weekday", "dish_id"])["profit"]
+                filt_top.groupby(["weekday", "platillo_cve"])["monto_total"]
                 .sum()
                 .unstack(fill_value=0)
             )
