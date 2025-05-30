@@ -23,6 +23,7 @@ dependencies = [
     "mlforecast>=1.0.2",
     "xgboost>=2.1.4",
     "catboost>=1.2.8",
+    "streamlit>=1.45.1",
 ]
 
 [tool.uv.workspace]
