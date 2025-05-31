@@ -66,17 +66,28 @@ dishes_mapping:
   save_args:
     index: False
 
-results_occupancy:
+price_df:
   type: pandas.CSVDataset
-  filepath: "abfs://tca-blob-storage/08_reporting/occupancy_results.csv"
+  filepath: "abfs://tca-blob-storage/08_reporting/price_df.csv"
   credentials:
     account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
     account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
   save_args:
     index: False
-results_demand:
+  
+occupancy_predictions:
   type: pandas.CSVDataset
-  filepath: "abfs://tca-blob-storage/08_reporting/demand_results.csv"
+  filepath: "abfs://tca-blob-storage/08_reporting/occupancy_predictions.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+
+mae_per_plt:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/08_reporting/mae_per_plt.csv"
   credentials:
     account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
     account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}

@@ -7,7 +7,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+.env
 # C extensions
 *.so
 uv.lock
@@ -28,7 +28,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-env
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -36,7 +36,7 @@ pip-delete-this-directory.txt
 # PyInstaller
 *.manifest
 *.spec
-
+env
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -85,7 +85,7 @@ ipython_config.py
 
 # pipenv
 Pipfile.lock
-.env
+
 # poetry
 poetry.lock
 
@@ -136,5 +136,5 @@ Notebooks_Development/lightning_logs
 
 # Plots for artifats
 *.png
-
+.env
 Notebooks_Development/*catboost_info/*

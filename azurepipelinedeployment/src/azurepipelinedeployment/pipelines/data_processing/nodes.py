@@ -1,6 +1,9 @@
 
 import pandas as pd
 import holidays
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+import numpy as np
 
 def clean_reservations(df: pd.DataFrame, numeric_columns_reservations: list[str]) -> pd.DataFrame:
     """
@@ -120,7 +123,7 @@ def clean_dishes(df: pd.DataFrame, numeric_columns_dishes: list[str]) -> pd.Data
 
     return df_clean[~outlier_mask]
 
-def generate_daily_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+def generate_daily_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, list]:
     """
     Generates a daily demand DataFrame.
     It also creates a mapping DataFrame for platillo_cve to platillo_id.
@@ -134,6 +137,11 @@ def generate_daily_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple
     Also, it filters dishes with low revenue, keeping only the top 80% of revenue-generating dishes.
     Thus helping to reduce the dimensionality of the data and focus on the most important dishes.
 
+    It also calculates PCA embeddings for the demand statistics of each dish.
+    The embeddings are used to reduce the dimensionality of the data and capture the most important features of each dish.
+    The function also calculates the unit price for each dish based on the total revenue and quantity sold.
+
+
     Args:
         df (pd.DataFrame): Input DataFrame with columns 'fec_com', 'platillo_cve', 'monto_total'.
         df_occupancy (pd.DataFrame): DataFrame with daily occupancy data.
@@ -142,6 +150,8 @@ def generate_daily_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple
         tuple[pd.DataFrame, pd.DataFrame]: A tuple containing:
             - daily_df: A DataFrame with weekly demand data.
             - mapping_df: A DataFrame with mapping of platillo_cve to platillo_id.
+            - price_df: A DataFrame with unit prices for each dish.
+            - feature_cols: A list of feature columns used later in the model.
 
     """
 
@@ -187,11 +197,52 @@ def generate_daily_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple
     mapping_df = pd.DataFrame(list(platillo_id_map.items()), columns=["platillo_cve", "platillo_id"])
     mapping_df = mapping_df[mapping_df["platillo_id"].isin(platillos_top_80)].reset_index(drop=True)
 
+    price_df = (
+    daily_df.groupby("platillo_id")
+            .agg(monto_total=("monto_total", "sum"),
+                 cantidad_total=("cantidad", "sum"))
+            .assign(precio_unitario=lambda x: x["monto_total"] / x["cantidad_total"])
+            .reset_index()[["platillo_id", "precio_unitario"]]
+    )
 
     daily_df = daily_df.fillna(0)
     daily_df.drop('platillo_cve', axis=1, inplace=True)
 
-    return daily_df, mapping_df
+    stats = []
+    for pid, g in daily_df.groupby('platillo_id'):
+        s = g.sort_values('fecha')['cantidad']
+        stats.append({
+            'platillo_id':    pid,
+            'mean_sales':     s.mean(),
+            'std_sales':      s.std(),
+            'var_sales':      s.var(),
+            'cv_sales':       s.std()/s.mean() if s.mean() else 0,
+            'spike_count':    (s > s.mean() + 2*s.std()).sum(),
+            'zero_days_ratio':(s == 0).mean(),
+        })
+    stats_df = pd.DataFrame(stats)
+
+    num_cols = ['mean_sales','std_sales','var_sales','cv_sales','spike_count','zero_days_ratio']
+    scaler = StandardScaler().fit(stats_df[num_cols].fillna(0))
+    statistics = scaler.transform(stats_df[num_cols].fillna(0))
+
+    pca_dummy = PCA().fit(statistics)
+    cum_var = np.cumsum(pca_dummy.explained_variance_ratio_)
+    k = np.searchsorted(cum_var, 0.95) + 1
+    pca = PCA(n_components=k, random_state=42).fit(statistics)
+    embedddings = pca.transform(statistics)
+
+    emb_df = pd.DataFrame(
+        embedddings,
+        columns=[f'pca_emb_{i}' for i in range(k)]
+    )
+    emb_df['platillo_id'] = stats_df['platillo_id']
+
+    daily_df = daily_df.merge(emb_df, on='platillo_id')
+
+    feature_cols = ['platillo_id','lag_1','lag_7','ocupacion','dia_semana','dia_festivo'] + [f'pca_emb_{i}' for i in range(k)]
+
+    return daily_df, mapping_df, price_df, feature_cols
 
 
 
