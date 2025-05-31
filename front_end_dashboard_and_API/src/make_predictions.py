@@ -9,6 +9,7 @@ from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 from dotenv import load_dotenv
 import os
+import logging
 import sys
 import os
 from load_data import load_demand,load_occupancy
@@ -18,7 +19,14 @@ credential = DefaultAzureCredential()
 secret_client     = SecretClient(vault_url=vault_url, credential=credential)
 
 
+logger = logging.getLogger("prediction_logger")
+logger.setLevel(logging.INFO)
 
+# StreamHandler para que imprima en STDOUT (visible en “Show server logs”)
+handler = logging.StreamHandler(stream=sys.stdout)
+formatter = logging.Formatter("%(asctime)s — %(levelname)s — %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 @st.cache_data(show_spinner=False)
 def prediction_preprocessing() :
@@ -72,7 +80,7 @@ def prediction_preprocessing() :
     )
     return y_pred_30, emb_lookup, future_dates, buffers, mx_holidays
 
-@st.cache_resource
+@st.cache_resource()
 def get_prediction_client():
     # grab endpoint/url/api key only once per app session
     endpoint = secret_client.get_secret("sarimax-endpoint-url").value
@@ -87,6 +95,7 @@ def get_prediction_client():
     return endpoint, sess
 def model_make_prediction(df_input: pd.DataFrame) -> dict:
     endpoint, sess = get_prediction_client()
+    logger.info(f"▶ Enviando POST a {endpoint} con payload de tamaño {df_input.shape}")
     payload = { "input_data": { "columns": df_input.columns.tolist(),
                                 "data":    df_input.values.tolist() } }
     resp = sess.post(endpoint, json=payload)

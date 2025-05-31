@@ -13,21 +13,14 @@ from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 import numpy as np
 from azure.storage.blob import BlobServiceClient
-from dotenv import load_dotenv
 
 import streamlit as st
 
-load_dotenv()
-
-# Retrieve the Azure Key Vault URI from environment variables
-KEYVAULT_URI = os.getenv("KEYVAULT_URI")
-if not KEYVAULT_URI:
-    # Fail fast if KEYVAULT_URI is not provided
-    raise RuntimeError("Environment variable KEYVAULT_URI is not set.")
-# Authenticate using DefaultAzureCredential, which supports managed identity or local development
+vault_url = os.environ["KEYVAULT_URI"]
 credential = DefaultAzureCredential()
-# Create a client to interact with Azure Key Vault secrets
-secret_client = SecretClient(vault_url=KEYVAULT_URI, credential=credential)
+secret_client     = SecretClient(vault_url=vault_url, credential=credential)
+# Authenticate using DefaultAzureCredential, which supports managed identity or local development
+
 
 
 ################################################ Functions to connect to Azure Blob Storage and download datasets
@@ -47,9 +40,12 @@ def get_storage_connection_string() -> str:
         f"EndpointSuffix=core.windows.net"
     )
     return conn_str
+
+@st.cache_resource(show_spinner=False)
 def get_blob_service() -> BlobServiceClient:
     conn_str = get_storage_connection_string()
     return BlobServiceClient.from_connection_string(conn_str)
+
 def download_blob_storage_df(
     blob_storage_name: str,
     dataset_directory: str,
@@ -84,6 +80,7 @@ def load_pricedf() -> pd.DataFrame:
         blob_storage_name="tca-blob-storage",
         dataset_directory="08_reporting/price_df.csv"
     )
+@st.cache_data(show_spinner=False)
 def load_dishes_mapping() -> pd.DataFrame:
     return download_blob_storage_df(
         blob_storage_name="tca-blob-storage",
@@ -113,7 +110,7 @@ def load_occupancy_forecast() -> pd.DataFrame:
     df['fecha'] = pd.to_datetime(df['fecha'])
     return df
 
-@st.cache_data(show_spinner="Cargando datos…")
+@st.cache_data(show_spinner=False)
 def load_occupancy_csv() -> pd.DataFrame:
     """Lee y cachea el CSV especificado."""
     df = download_blob_storage_df(
@@ -124,7 +121,7 @@ def load_occupancy_csv() -> pd.DataFrame:
     return df
 
 
-@st.cache_data(show_spinner="Cargando datos de F&B")
+@st.cache_data(show_spinner=False)
 def load_food_beverage_csv(
     csv_path: str | Path, parse_dates: list[str]
 ) -> pd.DataFrame:
