@@ -331,20 +331,19 @@ az ml job create \
 3. **Me voy azure machine learning studio y veo como ahora mi job es un pipeline que puede tener un schedule de ejecucion**
 ![alt text](image-20.png)
 
-### Crear el schedule de ejecución usa la siguiente metodologia o revisa el folder `SCHEDULE_AZURE_MACHINE_LEARNING_PIPELINE`
-1. **Creo un archivo llamado `kedro-schedule.yml` a la par de mi `azureml.yml`
-```
-$schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
-name: weekly-kedro-prod-schedule
-display_name: Weekly Kedro Prod Pipeline
-description: Run the Kedro prod pipeline every Thursday at 1:20 PM America/Monterrey
 
-trigger:
-  type: cron
-  expression: "20 13 * * 4"        # ── 1:20 PM every Thursday (day-of-week=4) :contentReference[oaicite:0]{index=0}
-  start_time: "2025-05-22T13:20:00" # ── first run: May 22, 2025 at 1:20 PM
-  time_zone: "America/Monterrey"
+## Crear real time endpoints para mis modelos.
+Debes crear un real time endpoint para mis modelos
+para el lightgbm debes nombrarlo `tca-software-m-lightgbm` y para el modelo sarimax debes nombrar el endpoint `tca-software-ml-sarimax`
+1. ir al modelo registrado y seleccionar Real Time Endpoint
+![alt text](image-21.png)
+2. configyrar el endpoint con los siguientes parametros
+![alt text](image-22.png)
+![alt text](image-23.png)
 
-create_job: ./azureml.yml           # ── reference your existing job file :contentReference[oaicite:1]{index=1}
-
-```
+3. Una vez el endpoint se creo correctamente me voy a la tab de `Consume`
+![alt text](image-24.png)
+Ahi puedo encontrar el:
+- `REST EndPoint URI`
+- `Primary Key`
+Guarda estos para el desarrollo del dashboard.
