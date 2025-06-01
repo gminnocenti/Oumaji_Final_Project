@@ -7,3 +7,4 @@ azureml.yml
 .env*
 .venv
 uv.lock
+*.png

@@ -1,101 +1,350 @@
 # azurepipelinedeployment
+Este directorio contiene las instrucciones para poder desplegar esta pipeline en azure machine learning studio. **Porfavor abrir tu IDE en este directorio.**
 
-[![Powered by Kedro](https://img.shields.io/badge/powered_by-kedro-ffc900?logo=kedro)](https://kedro.org)
+## Crear Recursos necesarios  en Azure 
+1. **Azure Subscription ID**
+Crear un subscription id en azure
 
-## Overview
+2. **Azure Resource Group**
+crear un resource group
+![alt text](image-3.png)
+3. **Dentro de mi **Resource Group** agregar recursos** 
+![alt text](image-14.png)
+Tenes que revisar si ya tenes recursos creados para las siguientes opciones. Si no crealos.
+Necesitas 
+4. **storage acount**
+5. **key vault**
+6. **container registry**
 
-This is your new Kedro project, which was generated using `kedro 0.19.13`.
+7. **Azure ML workspace**
+![alt text](image-2.png)
+![alt text](image-15.png)
 
-Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
-## Rules and guidelines
+asi se debe ver mi resource group
+![alt text](image-1.png)
+8. **Azure ML Compute Cluster**
 
-In order to get the best out of the template:
+Debo abrir Azure Machine Learning Studio 
+![alt text](image-5.png)
+y crear un compute cluster en este apartado
+![alt text](image.png)
+![alt text](image-7.png)
+en manage identity
+seleccionar las opcines default 
+![alt text](image-8.png)
 
-* Don't remove any lines from the `.gitignore` file we provide
-* Make sure your results can be reproduced by following a data engineering convention
-* Don't commit data to your repository
-* Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
+aqui igual default options 
+![alt text](image-9.png)
 
-## How to install dependencies
+en manage identity seleccionar de mi computer `System assigned identity`
+![alt text](image-4.png)
 
-Declare any dependencies in `requirements.txt` for `pip` installation.
 
-To install them, run:
+9. **Configurar mi container registry**
+Debo Configurar mi container registry para que mi `Compute Cluster` pueda jalar la imagen de mi kedro pipeline. 
+- Go to your Azure Container Registry  in the Azure Portal.
+
+- Navigate to Access control (IAM) > Role assignments > + Add > Add role assignment.
+
+- In the form:
+
+- Role: Select AcrPull
+
+- Assign access to: Choose Managed identity
+
+- Select members: Click "Select members" and search for the name of your AML compute (should now appear since you just enabled identity)
+
+- Click Review + assign to save.
+![alt text](image-11.png)
+- Click the “Next” button (bottom right of your screen).
+
+- Under Members, select:
+
+- Managed identity esta es el `Principal ID` de tu compute cluster que creaste en el paso 8.
+
+y se tiene que ver algo asi tu pantalla donde seleccionaste tu Azure Machine Learning resource
+Continue with Review + assign and click Assign to complete.
+
+![alt text](image-6.png)
+
+y despues hay que restart el computer cluster.
+
+10. **Crear Blog Storage**
+El Blob storage es necesario para guardar los datasets que vas a utilizar en tu dashboard. De esta manera los outputs de las funciones de la pipeline estaran en un lugar ylos puedes mandar a llamar desde tu dashboard.
+ 
+Debo crearlo dentro del **storage account** que cree en el **paso 4**. 
+- me muevo a mi `storage account`
+- selecciono la opcion de `+ Containers`  en el search bar
+-  creo un nuevo contenedor debo llamarlo `pipeline-outputs`
+![alt text](image-10.png)
+ 
+Guarda el nombre de tu blob storage lo necesitaras cuando configures tu `catalog.yml`
+
+## Configuración de tu key vault
+La `Key Vault` tiene una función muy importante dentro del proyecto. Todos los id's de las credenciales que creamos en la sección pasada deben de estar escondidas en el codigo. Por motivos de seguridad. Es por eso que los valores o identificadores de estos recursos deben de ser guardados en la key vault. 
+
+### Agregar Credenciales o Secrets a tu Key Vault
+En esta sección estaran los comandos para agregar credenciales a mi key vault para eso tengo que darle el permiso a mi azure machine learning worspace de extraer , y agregar credenciales.
+1.  **Abro una terminal limpia y hago login a Azure**
+```
+az login
+```
+el siguiente comando solo es necesario correrlo una vez
+```
+az extension add --name ml
+```
+2. **Actualizo la Identidad de mi Azure Machine Learning Worskpace** Con el fin de conseguir el `Principal ID` de mi Workspace
 
 ```
-pip install -r requirements.txt
+az ml workspace update \
+  --name <azureml-workspace-name> \
+  --resource-group <your-resource-group-name> \
+  --set identity.type=SystemAssigned
 ```
-
-## How to run your Kedro pipeline
-
-You can run your Kedro project with:
-
+3. **Extraer el Principal ID de mi AML Worskapce**
+Este comando te enseñara un id debes guardarlo para el siguiente comando y remplazarlo en el lugar de <azureml-workspace-principal-id>
 ```
-kedro run
+az ml workspace show \
+  --name <azureml-workspace> \
+  --resource-group <your-resource-group> \
+  --query identity.principal_id \
+  -o tsv
 ```
-
-## How to test your Kedro project
-
-Have a look at the file `src/tests/test_run.py` for instructions on how to write your tests. You can run your tests as follows:
-
+4. **Darle permiso de acceso de mi Key Vault a mi AML Workspace**
 ```
-pytest
+az keyvault set-policy \
+  --name <your-key-vault-name> \
+  --object-id <azureml-workspace-principal-id> \
+  --secret-permissions get list
 ```
-
-You can configure the coverage threshold in your project's `pyproject.toml` file under the `[tool.coverage.report]` section.
-
-
-## Project dependencies
-
-To see and update the dependency requirements for your project use `requirements.txt`. You can install the project requirements with `pip install -r requirements.txt`.
-
-[Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
-
-## How to work with Kedro and notebooks
-
-> Note: Using `kedro jupyter` or `kedro ipython` to run your notebook provides these variables in scope: `context`, 'session', `catalog`, and `pipelines`.
->
-> Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r requirements.txt` you will not need to take any extra steps before you use them.
-
-### Jupyter
-To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
+5. **Darle permiso de agregar credenciales a mi AML Workspace**
 
 ```
-pip install jupyter
-```
-
-After installing Jupyter, you can start a local notebook server:
-
-```
-kedro jupyter notebook
-```
-
-### JupyterLab
-To use JupyterLab, you need to install it:
+az keyvault set-policy \
+  --name <key-vault-name> \
+  --upn <correo-de-azure> \
+  --secret-permissions get list set
 
 ```
-pip install jupyterlab
-```
 
-You can also start JupyterLab:
-
-```
-kedro jupyter lab
-```
-
-### IPython
-And if you want to run an IPython session:
+6. **Agregar todas las credenciales a mi key vault desde la terminal**
+**IMPORTANTE**
+En el siguiente formato debes remplazar el valor `<your-key-vault-name>` y todos los valores despues de `--value "<your-subscription-id>"` por su valor original en este caso `<your-subscription-id>` lo remplazas por su valor original. 
 
 ```
-kedro ipython
+az keyvault secret set --vault-name <your-key-vault-name> --name subscription-id        --value "<your-subscription-id>"
+az keyvault secret set --vault-name <your-key-vault-name> --name resource-group        --value "<your-resource-group>"
+az keyvault secret set --vault-name <your-key-vault-name> --name workspace-name        --value "<your-workspace-name>"
+az keyvault secret set --vault-name <your-key-vault-name> --name storage-account-name  --value "<your-storage-account-name>"
+az keyvault secret set --vault-name <your-key-vault-name> --name storage-account-key   --value "<your-storage-account-key>"
+az keyvault secret set --vault-name <your-key-vault-name> --name storage-container   --value "<your-storage-container-name>"
+az keyvault secret set --vault-name <your-key-vault-name> --name cluster-name          --value "<your-compute-cluster-name>"
+```
+7. **Agregar a mi Azure ML Workspace como Key Vault Secret User**
+- Voy a mi `key vault` en mi `azure portal `
+
+- despues `Acces Control (IAM)`
+- despues add role assignment
+- agrego uno y busco  y selecciono `Key Vault Secrets User`
+![alt text](image-16.png)
+- Despues de seleccionarle me muevo al `Memebers` Tab
+Selecciono los siguientes parametros:
+- Choose Managed identity.
+- Click Select members.
+- In the search box, find your Azure ML workspace’s managed identity
+![alt text](image-17.png)
+### Darle acceso a a mi **Compute Cluster** de accesar a mi **Key Vault**
+1. **Encuentro el `Principal ID` de mi `Compute Cluster` lo puedes ver desde el portal de Azure Machine Learning**
+![alt text](image-18.png)
+Guardalo y remplazalo en el siguiente comando en lugar de <azure-compute-cluster-principal-id>
+2. **Darle Acceso a mi `Compute Cluster` de accesar a secretos de mi Key Vault**
+```
+az keyvault set-policy \
+  --name <key-vault-name> \
+  --object-id <azure-compute-cluster-principal-id> \
+  --secret-permissions get list
+```
+### Darle acceso a a mi **Compute Cluster** de accesar a mi **Azure Container Registry**
+1. **Conseguir la Manage Identity de mi `Azure Container Registry**
+Este comando te va a devolver un valor remplazalo en el siguiente comando en lugar de <ACR_ID>
+```
+az acr show \           
+  --name <acr-name> \
+  --query id \
+  --output tsv
+```
+2. **Darle acceso a mi compute cluster de jalar imagenes de  mi `ACR`**
+```
+az role assignment create \
+  --assignee <azure-compute-cluster-principal-id> \
+  --role "AcrPull" \
+  --scope <ACR_ID>
+
+```
+### Declarar un experimento de Mlflow
+En este caso utilice la **example pipeline de kedro** me voy a mi pipeline de datascience para declarar mi experimento de mlflow en este directorio `src/kedroazuremldemo/pipelines/data_science/nodes.py`
+
+1. **Configurar mis credenciales para que mi AML Workspace pueda seguir mis experimentos**
+este comando me va a devolver un uri debes guardarlo lo vas a utilizar en tu `azureml.yml`
+```
+az ml workspace show \
+  --name <workspace> \
+  --resource-group <rg> \
+  --query mlflow_tracking_uri -o tsv
+
+```
+este uri debes agregarlo en tu **azureml.yml** en el lugar donde dice `<mlflow-workspace-uri>` a la par del environment variable `MLFLOW_TRACKING_URI` y `MLFLOW_REGISTRY_URI` . Azure necesita uri para saber donde guardar los experimentos de mlflow necesita ser ingresado como variables de entorno.
+
+## Subir archivos a mi azure blob storage.
+Debo descargar las siguientes tablas del servidor de sql del socio formador guardarlos como csv y subirlos en mi blob storage llamado  `pipeline-outputs`. Descargar las tablas :
+- `iar_reservaciones`
+- `iaab_Detalles_Vtas`
+Puedo agregar manualmente desde el Azure Portal los csv
+1. **Me muevo a mi azure blob storage llamdo `pipeline-outputs`**
+2. creo un directorio llamado `01_raw`
+3. subo manualmente los archivos de las tablas en tipo `.csv`
+4. renombre los archvios por lo siguiente 
+- `iaab_Detalles_Vtas.csv` -> `iaab_Detalles_Vtas-1.csv`
+- `iar_reservaciones.csv` -> `iar_reservaciones-1.csv`
+
+
+## Archivos necesarios para subir un `Job` a Azure Machine Learning Workspace
+Para poder ejecutar esta pipeline debo crear una `JOB` en azure machine learning studio. para esto necesitas un archivo llamado `azureml.yml` en el archivo `azureml.yml` contiene las instrucciones que va a seguir mi compute cluster de azureml.yml para correr mi imagen con mi proyecto. En esta seccion se presentaran todos los archivos necesarios para ejecutar la job en aml workspace y como mandar las **credenciales de mi key vault a mi imagen de doocker cuando es ejecutada en azure machine learning**
+
+### Crear tu **azureml.yml** al mismo nivel que tu dockerfile
+
+En el `azureml.yml` es el unico lugar donde vas a declarar credenciales explicitamente. Este archivo esta en tu `dockerignore` no va a estar en tu imagen asi los secretos estan seguros. Debes remplazar ciertos valores. Recuerda el uri para mlflow que conseguiste en la seccion anterior.
+```
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+
+experiment_name: <name-you-want-for-your-experiment>
+display_name:    <name-you-want-for-your-experiment>
+
+# Where to run
+compute: azureml:<compute-cluster-name>
+
+# Which Docker image to use
+environment:
+  image: <acr-name>.azurecr.io/<image-name>:latest
+
+# Code & command
+code: .
+command: python -m kedro run --env=azureml
+
+# ← SET YOUR STORAGE AND KEYVAULT SECRETS HERE
+environment_variables:
+  STORAGE_ACCOUNT_NAME:  <storage-account-name>
+  STORAGE_ACCOUNT_KEY:   <storage-account-key>
+  KEYVAULT_URI:          https://<key-vault-name>.vault.azure.net/
+  MLFLOW_TRACKING_URI: <mlflow-workspace-uri>
+  MLFLOW_REGISTRY_URI: <mlflow-workspace-uri>
+  KEDRO_LOGGING_CONFIG: "conf/logging.yml"
+
+# (Optional) to tag and filter runs
+tags:
+  purpose: "kedro-prod"
+  trigger: "python -m kedro run --env=azureml"
+
 ```
 
-### How to ignore notebook output cells in `git`
-To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with `nbstripout --install`. This will run `nbstripout` before anything is committed to `git`.
+1. **Correr este comando en mi terminal**
 
-> *Note:* Your output cells will be retained locally.
+```
+chmod +x entrypoint.sh
+```
 
-## Package your Kedro project
+## Ejecutar pipeline en Azure Machine Learning Workspace
+Ya tienes todo lo necesario para ejecutar pipeline en azure machine learning workspace. Solo debes correr los siguientes commandos. Debes correrlos desde la terminal de tu proyecto de kedro.
+1. **Login a azure y a tu acr donde vas a guardar tu imagen**
 
-[Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/tutorial/package_a_project.html)
+```
+az login
+```
+
+```
+az acr login \
+  --name <acr-name> \
+  --resource-group <resource-group-name>
+
+```
+2. **Construir y pushear imagen**
+Esto solo debes correrlo una vez para construir una imagen compatible con azure
+```
+docker buildx create --name multiarch-builder --use
+```
+```
+docker buildx build \
+  --platform linux/amd64 \
+  --no-cache \
+  --tag <nombre-acr>.azurecr.io/<nombre-imagen>:latest \
+  --push .
+```
+3. **Ejecutar la `JOB` en Azure Machine Learning Studio**
+Al correr este comando veras un json si se ejecuta correctamente. Este comando utiliza tus instrucciones del archivo `azureml.yml` y se ejecuta en Azure Machine Learning studio ahi podras ver la ejecución de tu pipeline.
+
+```
+az ml job create \
+  --file azureml.yml \
+  --resource-group    <nombre-resource-group> \
+  --workspace-name    <nombre-aml-workspace>  
+```
+
+
+## Como puedo schedule un job para que se ejecute cada n dias Creando una pipeline
+**IMPORTANTE**
+Hasta ahora tu estabs ejecutando un Job del tipo command. Para poder crear un **Schedule** que tu pipeline se ejecute todos los jueves a las 8:00 am por ejemplo tenes que convertir ese job del tipo command a un job del tipo **PIPELINE**
+1. **Actualizo mi `azureml.yml`**
+```
+# azureml.yml
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+jobs:
+  run_kedro:
+    type: command
+    compute: azureml:<nombre-compute-cluster>
+    environment:
+      image: <nombre-acr>.azurecr.io/<nombre-imagen>:latest
+    code: .
+    command: python -m kedro run --env=azureml
+    environment_variables:
+      STORAGE_ACCOUNT_NAME:  <storage-account-name>
+      STORAGE_ACCOUNT_KEY:   <storage-account-key>
+      KEYVAULT_URI:          https://<key-vault-name>.vault.azure.net/
+      MLFLOW_TRACKING_URI: "<mlflow-workspace-uri>"
+      MLFLOW_REGISTRY_URI: "<mlflow-workspace-uri>"
+      KEDRO_LOGGING_CONFIG: "conf/logging.yml"
+    tags:
+      purpose: "kedro-prod"
+      trigger: "python -m kedro run --env=azureml"
+
+```
+2. **Creo mi job del tipo pipeline**
+```
+az ml job create \
+  --file azureml.yml \
+  --resource-group    <nombre-resource-group> \
+  --workspace-name    <nombre-aml-workspace>  
+```
+3. **Me voy azure machine learning studio y veo como ahora mi job es un pipeline que puede tener un schedule de ejecucion**
+![alt text](image-20.png)
+
+### Crear el schedule de ejecución usa la siguiente metodologia o revisa el folder `SCHEDULE_AZURE_MACHINE_LEARNING_PIPELINE`
+1. **Creo un archivo llamado `kedro-schedule.yml` a la par de mi `azureml.yml`
+```
+$schema: https://azuremlschemas.azureedge.net/latest/schedule.schema.json
+name: weekly-kedro-prod-schedule
+display_name: Weekly Kedro Prod Pipeline
+description: Run the Kedro prod pipeline every Thursday at 1:20 PM America/Monterrey
+
+trigger:
+  type: cron
+  expression: "20 13 * * 4"        # ── 1:20 PM every Thursday (day-of-week=4) :contentReference[oaicite:0]{index=0}
+  start_time: "2025-05-22T13:20:00" # ── first run: May 22, 2025 at 1:20 PM
+  time_zone: "America/Monterrey"
+
+create_job: ./azureml.yml           # ── reference your existing job file :contentReference[oaicite:1]{index=1}
+
+```

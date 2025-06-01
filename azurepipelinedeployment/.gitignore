@@ -43,6 +43,7 @@ out/
 *~
 .*.swo
 .*.swp
+*.png
 
 # emacs
 *~

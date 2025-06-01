@@ -11,6 +11,7 @@ venv/
 .env.*
 .uv/
 uv.lock
+*.png
 
 # Jupyter checkpoints
 .ipynb_checkpoints
