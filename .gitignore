@@ -135,6 +135,5 @@ Notebooks_Development/checkpoints
 Notebooks_Development/lightning_logs
 
 # Plots for artifats
-*.png
 
 Notebooks_Development/*catboost_info/*
