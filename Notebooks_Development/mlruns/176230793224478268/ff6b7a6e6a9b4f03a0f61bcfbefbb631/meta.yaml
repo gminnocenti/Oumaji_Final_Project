@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/ff6b7a6e6a9b4f03a0f61bcfbefbb631/artifacts
+end_time: 1747924728162
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: ff6b7a6e6a9b4f03a0f61bcfbefbb631
+run_name: gentle-wasp-285
+run_uuid: ff6b7a6e6a9b4f03a0f61bcfbefbb631
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747924726455
+status: 3
+tags: []
+user_id: bernardocisneros

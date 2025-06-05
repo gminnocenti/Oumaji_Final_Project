@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/ec081900f88d4b75a75d0c35eb5ea513/artifacts
+end_time: 1747784471872
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: ec081900f88d4b75a75d0c35eb5ea513
+run_name: puzzled-yak-611
+run_uuid: ec081900f88d4b75a75d0c35eb5ea513
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747784455225
+status: 3
+tags: []
+user_id: jlaza

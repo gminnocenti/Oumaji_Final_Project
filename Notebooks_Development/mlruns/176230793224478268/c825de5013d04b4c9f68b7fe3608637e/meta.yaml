@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/c825de5013d04b4c9f68b7fe3608637e/artifacts
+end_time: 1747864262786
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: c825de5013d04b4c9f68b7fe3608637e
+run_name: rumbling-toad-359
+run_uuid: c825de5013d04b4c9f68b7fe3608637e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747864260823
+status: 3
+tags: []
+user_id: bernardocisneros

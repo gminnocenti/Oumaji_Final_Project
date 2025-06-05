@@ -1,0 +1,21 @@
+[project]
+name = "front-end-dashboard-and-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11.8"
+dependencies = [
+    "azure-identity>=1.23.0",
+    "azure-keyvault-secrets>=4.9.0",
+    "azure-storage-blob>=12.25.1",
+    "azure-ai-ml>=1.27.1",
+    "holidays>=0.73",
+    "dotenv>=0.9.9",
+    "pandas>=2.2.3",
+    "plotly>=6.1.1",
+    "requests>=2.32.3",
+    "requests>=2.32.3",
+    "statsmodels>=0.14.4",
+    "streamlit>=1.45.1",
+    "streamlit-aggrid>=1.1.4.post1",
+]

@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/400716610318719328/f19b3c09457747e9b85547775be1f31e/artifacts
+end_time: 1748045708047
+entry_point_name: ''
+experiment_id: '400716610318719328'
+lifecycle_stage: active
+run_id: f19b3c09457747e9b85547775be1f31e
+run_name: monumental-foal-129
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748045704329
+status: 3
+tags: []
+user_id: axllopez

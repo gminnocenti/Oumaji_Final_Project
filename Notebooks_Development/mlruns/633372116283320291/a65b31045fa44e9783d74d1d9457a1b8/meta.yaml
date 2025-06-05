@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/633372116283320291/a65b31045fa44e9783d74d1d9457a1b8/artifacts
+end_time: 1747431622992
+entry_point_name: ''
+experiment_id: '633372116283320291'
+lifecycle_stage: active
+run_id: a65b31045fa44e9783d74d1d9457a1b8
+run_name: wise-kit-662
+run_uuid: a65b31045fa44e9783d74d1d9457a1b8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747431621243
+status: 3
+tags: []
+user_id: bernardocisneros

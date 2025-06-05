@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/5ff3f4abd8c84d6f824c3e6150d633a1/artifacts
+end_time: 1747864341768
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 5ff3f4abd8c84d6f824c3e6150d633a1
+run_name: stately-elk-441
+run_uuid: 5ff3f4abd8c84d6f824c3e6150d633a1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747864339715
+status: 3
+tags: []
+user_id: bernardocisneros

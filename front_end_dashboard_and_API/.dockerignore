@@ -1,0 +1,32 @@
+# Ignorar caches de Python y archivos temporales
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar git (no subas la carpeta .git al contenedor)
+.git/
+.gitignore
+
+# Ignorar entornos virtuales
+venv/
+.env
+.env.*
+
+# Ignorar archivos de Docker cuando no sean necesarios
+Dockerfile
+docker-compose.yml
+
+# Ignorar logs y directorios temporales de sistemas operativos
+*.log
+*.tmp
+*.swp
+*.DS_Store
+
+# Ignorar caches de Streamlit
+.streamlit/
+
+# Ignorar carpetas de pruebas o builds locales
+build/
+dist/
+*.egg-info/

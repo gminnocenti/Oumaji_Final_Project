@@ -1,0 +1,1 @@
+{'id_col': 'platillo_id', 'time_col': 'fecha', 'target_col': 'cantidad', 'static_features': []}

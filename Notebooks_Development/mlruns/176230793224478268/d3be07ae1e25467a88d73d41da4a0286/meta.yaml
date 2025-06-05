@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/d3be07ae1e25467a88d73d41da4a0286/artifacts
+end_time: 1747777356768
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: d3be07ae1e25467a88d73d41da4a0286
+run_name: unruly-vole-82
+run_uuid: d3be07ae1e25467a88d73d41da4a0286
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747777337783
+status: 4
+tags: []
+user_id: jlaza

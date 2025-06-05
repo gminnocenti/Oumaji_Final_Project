@@ -1,0 +1,34 @@
+artifact_path: model
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.3.2
+is_signature_from_type_hint: false
+mlflow_version: 2.22.0
+model_size_bytes: 633544
+model_uuid: 3cd0a438af2e4f42b0b48dfa978e74d3
+prompts: null
+run_id: ec081900f88d4b75a75d0c35eb5ea513
+signature:
+  inputs: '[{"type": "long", "name": "dia_festivo", "required": true}, {"type": "long",
+    "name": "semana_ano", "required": true}, {"type": "long", "name": "mes", "required":
+    true}, {"type": "long", "name": "trimestre", "required": true}, {"type": "long",
+    "name": "ano", "required": true}, {"type": "long", "name": "lag_1", "required":
+    true}, {"type": "long", "name": "lag_2", "required": true}, {"type": "long", "name":
+    "lag_3", "required": true}, {"type": "long", "name": "lag_4", "required": true},
+    {"type": "long", "name": "lag_5", "required": true}, {"type": "long", "name":
+    "lag_6", "required": true}, {"type": "long", "name": "lag_7", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-05-20 23:40:56.946867'

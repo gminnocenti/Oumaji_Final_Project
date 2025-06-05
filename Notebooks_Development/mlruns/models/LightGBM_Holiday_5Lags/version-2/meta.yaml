@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1747871701948
+current_stage: None
+description: ''
+last_updated_timestamp: 1747871701948
+name: LightGBM_Holiday_5Lags
+run_id: e6029d13ef2c47ff8f706ba762ba3f1f
+run_link: ''
+source: mlflow-artifacts:/176230793224478268/e6029d13ef2c47ff8f706ba762ba3f1f/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/176230793224478268/e6029d13ef2c47ff8f706ba762ba3f1f/artifacts/model
+user_id: null
+version: 2

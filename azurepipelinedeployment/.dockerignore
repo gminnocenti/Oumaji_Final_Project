@@ -1,0 +1,57 @@
+# ========================
+# Python cache + bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+.env.*
+.uv/
+uv.lock
+*.png
+
+# Jupyter checkpoints
+.ipynb_checkpoints
+
+# ========================
+# Docker files
+Dockerfile
+.dockerignore
+
+# ========================
+# Kedro config
+# Ignore all local configs and any credentials files
+conf/local/
+conf/**/*credentials*.yml
+
+# Re-include the AzureML placeholder (must come _after_ the ignore)
+!conf/azureml/credentials.yml
+!conf/azureml/.gitkeep
+
+# ========================
+# Data, logs & outputs
+data/
+logs/
+notebooks/
+references/
+results/
+mlruns/
+outputs/
+
+# ========================
+# Sphinx/docs build
+docs/_build
+
+# ========================
+# Keep directory skeletons for volume mounts
+!logs/.gitkeep
+!notebooks/.gitkeep
+!references/.gitkeep
+!results/.gitkeep
+!mlruns/.gitkeep
+!outputs/.gitkeep
+azureml.yml
+requirements.txt

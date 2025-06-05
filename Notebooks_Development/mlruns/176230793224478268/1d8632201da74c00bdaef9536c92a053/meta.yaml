@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/1d8632201da74c00bdaef9536c92a053/artifacts
+end_time: 1747782527961
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 1d8632201da74c00bdaef9536c92a053
+run_name: useful-fly-764
+run_uuid: 1d8632201da74c00bdaef9536c92a053
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747782511521
+status: 3
+tags: []
+user_id: jlaza

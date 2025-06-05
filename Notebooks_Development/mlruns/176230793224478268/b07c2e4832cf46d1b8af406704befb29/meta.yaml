@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/b07c2e4832cf46d1b8af406704befb29/artifacts
+end_time: 1747889771746
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: b07c2e4832cf46d1b8af406704befb29
+run_name: grandiose-bass-833
+run_uuid: b07c2e4832cf46d1b8af406704befb29
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747889769915
+status: 3
+tags: []
+user_id: bernardocisneros

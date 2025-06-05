@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/f87b1d8741f243e5841a16eaa701f489/artifacts
+end_time: 1747781096300
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: f87b1d8741f243e5841a16eaa701f489
+run_name: victorious-gnu-990
+run_uuid: f87b1d8741f243e5841a16eaa701f489
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747781079661
+status: 3
+tags: []
+user_id: jlaza

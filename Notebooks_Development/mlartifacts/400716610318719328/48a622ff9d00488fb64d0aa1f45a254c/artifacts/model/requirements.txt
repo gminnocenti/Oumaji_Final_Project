@@ -1,0 +1,9 @@
+mlflow==2.22.0
+catboost==1.2.8
+lightgbm==4.6.0
+mlforecast==1.0.2
+numpy==2.2.6
+pandas==2.2.3
+scikit-learn==1.6.1
+scipy==1.15.3
+xgboost==3.0.1

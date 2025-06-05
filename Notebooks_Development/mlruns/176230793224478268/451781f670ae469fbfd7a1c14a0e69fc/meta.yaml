@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/451781f670ae469fbfd7a1c14a0e69fc/artifacts
+end_time: 1747889819612
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 451781f670ae469fbfd7a1c14a0e69fc
+run_name: monumental-fox-56
+run_uuid: 451781f670ae469fbfd7a1c14a0e69fc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747889818265
+status: 3
+tags: []
+user_id: bernardocisneros

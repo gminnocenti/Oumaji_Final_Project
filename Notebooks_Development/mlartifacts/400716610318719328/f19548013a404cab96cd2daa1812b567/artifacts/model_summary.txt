@@ -1,0 +1,404 @@
+    | Name                                                                                      | Type                            | Params | Mode 
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+0   | loss                                                                                      | QuantileLoss                    | 0      | train
+1   | logging_metrics                                                                           | ModuleList                      | 0      | train
+2   | logging_metrics.0                                                                         | SMAPE                           | 0      | train
+3   | logging_metrics.1                                                                         | MAE                             | 0      | train
+4   | logging_metrics.2                                                                         | RMSE                            | 0      | train
+5   | logging_metrics.3                                                                         | MAPE                            | 0      | train
+6   | input_embeddings                                                                          | MultiEmbedding                  | 0      | train
+7   | input_embeddings.embeddings                                                               | ModuleDict                      | 0      | train
+8   | prescalers                                                                                | ModuleDict                      | 1.8 K  | train
+9   | prescalers.encoder_length                                                                 | Linear                          | 128    | train
+10  | prescalers.cantidad_center                                                                | Linear                          | 128    | train
+11  | prescalers.cantidad_scale                                                                 | Linear                          | 128    | train
+12  | prescalers.time_idx                                                                       | Linear                          | 128    | train
+13  | prescalers.mes                                                                            | Linear                          | 128    | train
+14  | prescalers.semana_ano                                                                     | Linear                          | 128    | train
+15  | prescalers.trimestre                                                                      | Linear                          | 128    | train
+16  | prescalers.ano                                                                            | Linear                          | 128    | train
+17  | prescalers.dia_festivo                                                                    | Linear                          | 128    | train
+18  | prescalers.ocupacion                                                                      | Linear                          | 128    | train
+19  | prescalers.relative_time_idx                                                              | Linear                          | 128    | train
+20  | prescalers.cantidad                                                                       | Linear                          | 128    | train
+21  | prescalers.lag_1                                                                          | Linear                          | 128    | train
+22  | prescalers.lag_2                                                                          | Linear                          | 128    | train
+23  | static_variable_selection                                                                 | VariableSelectionNetwork        | 51.3 K | train
+24  | static_variable_selection.flattened_grn                                                   | GatedResidualNetwork            | 630    | train
+25  | static_variable_selection.flattened_grn.resample_norm                                     | ResampleNorm                    | 9      | train
+26  | static_variable_selection.flattened_grn.resample_norm.resample                            | TimeDistributedInterpolation    | 0      | train
+27  | static_variable_selection.flattened_grn.resample_norm.gate                                | Sigmoid                         | 0      | train
+28  | static_variable_selection.flattened_grn.resample_norm.norm                                | LayerNorm                       | 6      | train
+29  | static_variable_selection.flattened_grn.fc1                                               | Linear                          | 579    | train
+30  | static_variable_selection.flattened_grn.elu                                               | ELU                             | 0      | train
+31  | static_variable_selection.flattened_grn.fc2                                               | Linear                          | 12     | train
+32  | static_variable_selection.flattened_grn.gate_norm                                         | GateAddNorm                     | 30     | train
+33  | static_variable_selection.flattened_grn.gate_norm.glu                                     | GatedLinearUnit                 | 24     | train
+34  | static_variable_selection.flattened_grn.gate_norm.glu.dropout                             | Dropout                         | 0      | train
+35  | static_variable_selection.flattened_grn.gate_norm.glu.fc                                  | Linear                          | 24     | train
+36  | static_variable_selection.flattened_grn.gate_norm.add_norm                                | AddNorm                         | 6      | train
+37  | static_variable_selection.flattened_grn.gate_norm.add_norm.norm                           | LayerNorm                       | 6      | train
+38  | static_variable_selection.single_variable_grns                                            | ModuleDict                      | 50.3 K | train
+39  | static_variable_selection.single_variable_grns.encoder_length                             | GatedResidualNetwork            | 16.8 K | train
+40  | static_variable_selection.single_variable_grns.encoder_length.fc1                         | Linear                          | 4.2 K  | train
+41  | static_variable_selection.single_variable_grns.encoder_length.elu                         | ELU                             | 0      | train
+42  | static_variable_selection.single_variable_grns.encoder_length.fc2                         | Linear                          | 4.2 K  | train
+43  | static_variable_selection.single_variable_grns.encoder_length.gate_norm                   | GateAddNorm                     | 8.4 K  | train
+44  | static_variable_selection.single_variable_grns.encoder_length.gate_norm.glu               | GatedLinearUnit                 | 8.3 K  | train
+45  | static_variable_selection.single_variable_grns.encoder_length.gate_norm.glu.dropout       | Dropout                         | 0      | train
+46  | static_variable_selection.single_variable_grns.encoder_length.gate_norm.glu.fc            | Linear                          | 8.3 K  | train
+47  | static_variable_selection.single_variable_grns.encoder_length.gate_norm.add_norm          | AddNorm                         | 128    | train
+48  | static_variable_selection.single_variable_grns.encoder_length.gate_norm.add_norm.norm     | LayerNorm                       | 128    | train
+49  | static_variable_selection.single_variable_grns.cantidad_center                            | GatedResidualNetwork            | 16.8 K | train
+50  | static_variable_selection.single_variable_grns.cantidad_center.fc1                        | Linear                          | 4.2 K  | train
+51  | static_variable_selection.single_variable_grns.cantidad_center.elu                        | ELU                             | 0      | train
+52  | static_variable_selection.single_variable_grns.cantidad_center.fc2                        | Linear                          | 4.2 K  | train
+53  | static_variable_selection.single_variable_grns.cantidad_center.gate_norm                  | GateAddNorm                     | 8.4 K  | train
+54  | static_variable_selection.single_variable_grns.cantidad_center.gate_norm.glu              | GatedLinearUnit                 | 8.3 K  | train
+55  | static_variable_selection.single_variable_grns.cantidad_center.gate_norm.glu.dropout      | Dropout                         | 0      | train
+56  | static_variable_selection.single_variable_grns.cantidad_center.gate_norm.glu.fc           | Linear                          | 8.3 K  | train
+57  | static_variable_selection.single_variable_grns.cantidad_center.gate_norm.add_norm         | AddNorm                         | 128    | train
+58  | static_variable_selection.single_variable_grns.cantidad_center.gate_norm.add_norm.norm    | LayerNorm                       | 128    | train
+59  | static_variable_selection.single_variable_grns.cantidad_scale                             | GatedResidualNetwork            | 16.8 K | train
+60  | static_variable_selection.single_variable_grns.cantidad_scale.fc1                         | Linear                          | 4.2 K  | train
+61  | static_variable_selection.single_variable_grns.cantidad_scale.elu                         | ELU                             | 0      | train
+62  | static_variable_selection.single_variable_grns.cantidad_scale.fc2                         | Linear                          | 4.2 K  | train
+63  | static_variable_selection.single_variable_grns.cantidad_scale.gate_norm                   | GateAddNorm                     | 8.4 K  | train
+64  | static_variable_selection.single_variable_grns.cantidad_scale.gate_norm.glu               | GatedLinearUnit                 | 8.3 K  | train
+65  | static_variable_selection.single_variable_grns.cantidad_scale.gate_norm.glu.dropout       | Dropout                         | 0      | train
+66  | static_variable_selection.single_variable_grns.cantidad_scale.gate_norm.glu.fc            | Linear                          | 8.3 K  | train
+67  | static_variable_selection.single_variable_grns.cantidad_scale.gate_norm.add_norm          | AddNorm                         | 128    | train
+68  | static_variable_selection.single_variable_grns.cantidad_scale.gate_norm.add_norm.norm     | LayerNorm                       | 128    | train
+69  | static_variable_selection.prescalers                                                      | ModuleDict                      | 384    | train
+70  | static_variable_selection.softmax                                                         | Softmax                         | 0      | train
+71  | encoder_variable_selection                                                                | VariableSelectionNetwork        | 194 K  | train
+72  | encoder_variable_selection.flattened_grn                                                  | GatedResidualNetwork            | 8.9 K  | train
+73  | encoder_variable_selection.flattened_grn.resample_norm                                    | ResampleNorm                    | 33     | train
+74  | encoder_variable_selection.flattened_grn.resample_norm.resample                           | TimeDistributedInterpolation    | 0      | train
+75  | encoder_variable_selection.flattened_grn.resample_norm.gate                               | Sigmoid                         | 0      | train
+76  | encoder_variable_selection.flattened_grn.resample_norm.norm                               | LayerNorm                       | 22     | train
+77  | encoder_variable_selection.flattened_grn.fc1                                              | Linear                          | 7.8 K  | train
+78  | encoder_variable_selection.flattened_grn.elu                                              | ELU                             | 0      | train
+79  | encoder_variable_selection.flattened_grn.context                                          | Linear                          | 704    | train
+80  | encoder_variable_selection.flattened_grn.fc2                                              | Linear                          | 132    | train
+81  | encoder_variable_selection.flattened_grn.gate_norm                                        | GateAddNorm                     | 286    | train
+82  | encoder_variable_selection.flattened_grn.gate_norm.glu                                    | GatedLinearUnit                 | 264    | train
+83  | encoder_variable_selection.flattened_grn.gate_norm.glu.dropout                            | Dropout                         | 0      | train
+84  | encoder_variable_selection.flattened_grn.gate_norm.glu.fc                                 | Linear                          | 264    | train
+85  | encoder_variable_selection.flattened_grn.gate_norm.add_norm                               | AddNorm                         | 22     | train
+86  | encoder_variable_selection.flattened_grn.gate_norm.add_norm.norm                          | LayerNorm                       | 22     | train
+87  | encoder_variable_selection.single_variable_grns                                           | ModuleDict                      | 184 K  | train
+88  | encoder_variable_selection.single_variable_grns.time_idx                                  | GatedResidualNetwork            | 16.8 K | train
+89  | encoder_variable_selection.single_variable_grns.time_idx.fc1                              | Linear                          | 4.2 K  | train
+90  | encoder_variable_selection.single_variable_grns.time_idx.elu                              | ELU                             | 0      | train
+91  | encoder_variable_selection.single_variable_grns.time_idx.fc2                              | Linear                          | 4.2 K  | train
+92  | encoder_variable_selection.single_variable_grns.time_idx.gate_norm                        | GateAddNorm                     | 8.4 K  | train
+93  | encoder_variable_selection.single_variable_grns.time_idx.gate_norm.glu                    | GatedLinearUnit                 | 8.3 K  | train
+94  | encoder_variable_selection.single_variable_grns.time_idx.gate_norm.glu.dropout            | Dropout                         | 0      | train
+95  | encoder_variable_selection.single_variable_grns.time_idx.gate_norm.glu.fc                 | Linear                          | 8.3 K  | train
+96  | encoder_variable_selection.single_variable_grns.time_idx.gate_norm.add_norm               | AddNorm                         | 128    | train
+97  | encoder_variable_selection.single_variable_grns.time_idx.gate_norm.add_norm.norm          | LayerNorm                       | 128    | train
+98  | encoder_variable_selection.single_variable_grns.mes                                       | GatedResidualNetwork            | 16.8 K | train
+99  | encoder_variable_selection.single_variable_grns.mes.fc1                                   | Linear                          | 4.2 K  | train
+100 | encoder_variable_selection.single_variable_grns.mes.elu                                   | ELU                             | 0      | train
+101 | encoder_variable_selection.single_variable_grns.mes.fc2                                   | Linear                          | 4.2 K  | train
+102 | encoder_variable_selection.single_variable_grns.mes.gate_norm                             | GateAddNorm                     | 8.4 K  | train
+103 | encoder_variable_selection.single_variable_grns.mes.gate_norm.glu                         | GatedLinearUnit                 | 8.3 K  | train
+104 | encoder_variable_selection.single_variable_grns.mes.gate_norm.glu.dropout                 | Dropout                         | 0      | train
+105 | encoder_variable_selection.single_variable_grns.mes.gate_norm.glu.fc                      | Linear                          | 8.3 K  | train
+106 | encoder_variable_selection.single_variable_grns.mes.gate_norm.add_norm                    | AddNorm                         | 128    | train
+107 | encoder_variable_selection.single_variable_grns.mes.gate_norm.add_norm.norm               | LayerNorm                       | 128    | train
+108 | encoder_variable_selection.single_variable_grns.semana_ano                                | GatedResidualNetwork            | 16.8 K | train
+109 | encoder_variable_selection.single_variable_grns.semana_ano.fc1                            | Linear                          | 4.2 K  | train
+110 | encoder_variable_selection.single_variable_grns.semana_ano.elu                            | ELU                             | 0      | train
+111 | encoder_variable_selection.single_variable_grns.semana_ano.fc2                            | Linear                          | 4.2 K  | train
+112 | encoder_variable_selection.single_variable_grns.semana_ano.gate_norm                      | GateAddNorm                     | 8.4 K  | train
+113 | encoder_variable_selection.single_variable_grns.semana_ano.gate_norm.glu                  | GatedLinearUnit                 | 8.3 K  | train
+114 | encoder_variable_selection.single_variable_grns.semana_ano.gate_norm.glu.dropout          | Dropout                         | 0      | train
+115 | encoder_variable_selection.single_variable_grns.semana_ano.gate_norm.glu.fc               | Linear                          | 8.3 K  | train
+116 | encoder_variable_selection.single_variable_grns.semana_ano.gate_norm.add_norm             | AddNorm                         | 128    | train
+117 | encoder_variable_selection.single_variable_grns.semana_ano.gate_norm.add_norm.norm        | LayerNorm                       | 128    | train
+118 | encoder_variable_selection.single_variable_grns.trimestre                                 | GatedResidualNetwork            | 16.8 K | train
+119 | encoder_variable_selection.single_variable_grns.trimestre.fc1                             | Linear                          | 4.2 K  | train
+120 | encoder_variable_selection.single_variable_grns.trimestre.elu                             | ELU                             | 0      | train
+121 | encoder_variable_selection.single_variable_grns.trimestre.fc2                             | Linear                          | 4.2 K  | train
+122 | encoder_variable_selection.single_variable_grns.trimestre.gate_norm                       | GateAddNorm                     | 8.4 K  | train
+123 | encoder_variable_selection.single_variable_grns.trimestre.gate_norm.glu                   | GatedLinearUnit                 | 8.3 K  | train
+124 | encoder_variable_selection.single_variable_grns.trimestre.gate_norm.glu.dropout           | Dropout                         | 0      | train
+125 | encoder_variable_selection.single_variable_grns.trimestre.gate_norm.glu.fc                | Linear                          | 8.3 K  | train
+126 | encoder_variable_selection.single_variable_grns.trimestre.gate_norm.add_norm              | AddNorm                         | 128    | train
+127 | encoder_variable_selection.single_variable_grns.trimestre.gate_norm.add_norm.norm         | LayerNorm                       | 128    | train
+128 | encoder_variable_selection.single_variable_grns.ano                                       | GatedResidualNetwork            | 16.8 K | train
+129 | encoder_variable_selection.single_variable_grns.ano.fc1                                   | Linear                          | 4.2 K  | train
+130 | encoder_variable_selection.single_variable_grns.ano.elu                                   | ELU                             | 0      | train
+131 | encoder_variable_selection.single_variable_grns.ano.fc2                                   | Linear                          | 4.2 K  | train
+132 | encoder_variable_selection.single_variable_grns.ano.gate_norm                             | GateAddNorm                     | 8.4 K  | train
+133 | encoder_variable_selection.single_variable_grns.ano.gate_norm.glu                         | GatedLinearUnit                 | 8.3 K  | train
+134 | encoder_variable_selection.single_variable_grns.ano.gate_norm.glu.dropout                 | Dropout                         | 0      | train
+135 | encoder_variable_selection.single_variable_grns.ano.gate_norm.glu.fc                      | Linear                          | 8.3 K  | train
+136 | encoder_variable_selection.single_variable_grns.ano.gate_norm.add_norm                    | AddNorm                         | 128    | train
+137 | encoder_variable_selection.single_variable_grns.ano.gate_norm.add_norm.norm               | LayerNorm                       | 128    | train
+138 | encoder_variable_selection.single_variable_grns.dia_festivo                               | GatedResidualNetwork            | 16.8 K | train
+139 | encoder_variable_selection.single_variable_grns.dia_festivo.fc1                           | Linear                          | 4.2 K  | train
+140 | encoder_variable_selection.single_variable_grns.dia_festivo.elu                           | ELU                             | 0      | train
+141 | encoder_variable_selection.single_variable_grns.dia_festivo.fc2                           | Linear                          | 4.2 K  | train
+142 | encoder_variable_selection.single_variable_grns.dia_festivo.gate_norm                     | GateAddNorm                     | 8.4 K  | train
+143 | encoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.glu                 | GatedLinearUnit                 | 8.3 K  | train
+144 | encoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.glu.dropout         | Dropout                         | 0      | train
+145 | encoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.glu.fc              | Linear                          | 8.3 K  | train
+146 | encoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.add_norm            | AddNorm                         | 128    | train
+147 | encoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.add_norm.norm       | LayerNorm                       | 128    | train
+148 | encoder_variable_selection.single_variable_grns.ocupacion                                 | GatedResidualNetwork            | 16.8 K | train
+149 | encoder_variable_selection.single_variable_grns.ocupacion.fc1                             | Linear                          | 4.2 K  | train
+150 | encoder_variable_selection.single_variable_grns.ocupacion.elu                             | ELU                             | 0      | train
+151 | encoder_variable_selection.single_variable_grns.ocupacion.fc2                             | Linear                          | 4.2 K  | train
+152 | encoder_variable_selection.single_variable_grns.ocupacion.gate_norm                       | GateAddNorm                     | 8.4 K  | train
+153 | encoder_variable_selection.single_variable_grns.ocupacion.gate_norm.glu                   | GatedLinearUnit                 | 8.3 K  | train
+154 | encoder_variable_selection.single_variable_grns.ocupacion.gate_norm.glu.dropout           | Dropout                         | 0      | train
+155 | encoder_variable_selection.single_variable_grns.ocupacion.gate_norm.glu.fc                | Linear                          | 8.3 K  | train
+156 | encoder_variable_selection.single_variable_grns.ocupacion.gate_norm.add_norm              | AddNorm                         | 128    | train
+157 | encoder_variable_selection.single_variable_grns.ocupacion.gate_norm.add_norm.norm         | LayerNorm                       | 128    | train
+158 | encoder_variable_selection.single_variable_grns.relative_time_idx                         | GatedResidualNetwork            | 16.8 K | train
+159 | encoder_variable_selection.single_variable_grns.relative_time_idx.fc1                     | Linear                          | 4.2 K  | train
+160 | encoder_variable_selection.single_variable_grns.relative_time_idx.elu                     | ELU                             | 0      | train
+161 | encoder_variable_selection.single_variable_grns.relative_time_idx.fc2                     | Linear                          | 4.2 K  | train
+162 | encoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm               | GateAddNorm                     | 8.4 K  | train
+163 | encoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.glu           | GatedLinearUnit                 | 8.3 K  | train
+164 | encoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.glu.dropout   | Dropout                         | 0      | train
+165 | encoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.glu.fc        | Linear                          | 8.3 K  | train
+166 | encoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.add_norm      | AddNorm                         | 128    | train
+167 | encoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.add_norm.norm | LayerNorm                       | 128    | train
+168 | encoder_variable_selection.single_variable_grns.cantidad                                  | GatedResidualNetwork            | 16.8 K | train
+169 | encoder_variable_selection.single_variable_grns.cantidad.fc1                              | Linear                          | 4.2 K  | train
+170 | encoder_variable_selection.single_variable_grns.cantidad.elu                              | ELU                             | 0      | train
+171 | encoder_variable_selection.single_variable_grns.cantidad.fc2                              | Linear                          | 4.2 K  | train
+172 | encoder_variable_selection.single_variable_grns.cantidad.gate_norm                        | GateAddNorm                     | 8.4 K  | train
+173 | encoder_variable_selection.single_variable_grns.cantidad.gate_norm.glu                    | GatedLinearUnit                 | 8.3 K  | train
+174 | encoder_variable_selection.single_variable_grns.cantidad.gate_norm.glu.dropout            | Dropout                         | 0      | train
+175 | encoder_variable_selection.single_variable_grns.cantidad.gate_norm.glu.fc                 | Linear                          | 8.3 K  | train
+176 | encoder_variable_selection.single_variable_grns.cantidad.gate_norm.add_norm               | AddNorm                         | 128    | train
+177 | encoder_variable_selection.single_variable_grns.cantidad.gate_norm.add_norm.norm          | LayerNorm                       | 128    | train
+178 | encoder_variable_selection.single_variable_grns.lag_1                                     | GatedResidualNetwork            | 16.8 K | train
+179 | encoder_variable_selection.single_variable_grns.lag_1.fc1                                 | Linear                          | 4.2 K  | train
+180 | encoder_variable_selection.single_variable_grns.lag_1.elu                                 | ELU                             | 0      | train
+181 | encoder_variable_selection.single_variable_grns.lag_1.fc2                                 | Linear                          | 4.2 K  | train
+182 | encoder_variable_selection.single_variable_grns.lag_1.gate_norm                           | GateAddNorm                     | 8.4 K  | train
+183 | encoder_variable_selection.single_variable_grns.lag_1.gate_norm.glu                       | GatedLinearUnit                 | 8.3 K  | train
+184 | encoder_variable_selection.single_variable_grns.lag_1.gate_norm.glu.dropout               | Dropout                         | 0      | train
+185 | encoder_variable_selection.single_variable_grns.lag_1.gate_norm.glu.fc                    | Linear                          | 8.3 K  | train
+186 | encoder_variable_selection.single_variable_grns.lag_1.gate_norm.add_norm                  | AddNorm                         | 128    | train
+187 | encoder_variable_selection.single_variable_grns.lag_1.gate_norm.add_norm.norm             | LayerNorm                       | 128    | train
+188 | encoder_variable_selection.single_variable_grns.lag_2                                     | GatedResidualNetwork            | 16.8 K | train
+189 | encoder_variable_selection.single_variable_grns.lag_2.fc1                                 | Linear                          | 4.2 K  | train
+190 | encoder_variable_selection.single_variable_grns.lag_2.elu                                 | ELU                             | 0      | train
+191 | encoder_variable_selection.single_variable_grns.lag_2.fc2                                 | Linear                          | 4.2 K  | train
+192 | encoder_variable_selection.single_variable_grns.lag_2.gate_norm                           | GateAddNorm                     | 8.4 K  | train
+193 | encoder_variable_selection.single_variable_grns.lag_2.gate_norm.glu                       | GatedLinearUnit                 | 8.3 K  | train
+194 | encoder_variable_selection.single_variable_grns.lag_2.gate_norm.glu.dropout               | Dropout                         | 0      | train
+195 | encoder_variable_selection.single_variable_grns.lag_2.gate_norm.glu.fc                    | Linear                          | 8.3 K  | train
+196 | encoder_variable_selection.single_variable_grns.lag_2.gate_norm.add_norm                  | AddNorm                         | 128    | train
+197 | encoder_variable_selection.single_variable_grns.lag_2.gate_norm.add_norm.norm             | LayerNorm                       | 128    | train
+198 | encoder_variable_selection.prescalers                                                     | ModuleDict                      | 1.4 K  | train
+199 | encoder_variable_selection.softmax                                                        | Softmax                         | 0      | train
+200 | decoder_variable_selection                                                                | VariableSelectionNetwork        | 140 K  | train
+201 | decoder_variable_selection.flattened_grn                                                  | GatedResidualNetwork            | 4.9 K  | train
+202 | decoder_variable_selection.flattened_grn.resample_norm                                    | ResampleNorm                    | 24     | train
+203 | decoder_variable_selection.flattened_grn.resample_norm.resample                           | TimeDistributedInterpolation    | 0      | train
+204 | decoder_variable_selection.flattened_grn.resample_norm.gate                               | Sigmoid                         | 0      | train
+205 | decoder_variable_selection.flattened_grn.resample_norm.norm                               | LayerNorm                       | 16     | train
+206 | decoder_variable_selection.flattened_grn.fc1                                              | Linear                          | 4.1 K  | train
+207 | decoder_variable_selection.flattened_grn.elu                                              | ELU                             | 0      | train
+208 | decoder_variable_selection.flattened_grn.context                                          | Linear                          | 512    | train
+209 | decoder_variable_selection.flattened_grn.fc2                                              | Linear                          | 72     | train
+210 | decoder_variable_selection.flattened_grn.gate_norm                                        | GateAddNorm                     | 160    | train
+211 | decoder_variable_selection.flattened_grn.gate_norm.glu                                    | GatedLinearUnit                 | 144    | train
+212 | decoder_variable_selection.flattened_grn.gate_norm.glu.dropout                            | Dropout                         | 0      | train
+213 | decoder_variable_selection.flattened_grn.gate_norm.glu.fc                                 | Linear                          | 144    | train
+214 | decoder_variable_selection.flattened_grn.gate_norm.add_norm                               | AddNorm                         | 16     | train
+215 | decoder_variable_selection.flattened_grn.gate_norm.add_norm.norm                          | LayerNorm                       | 16     | train
+216 | decoder_variable_selection.single_variable_grns                                           | ModuleDict                      | 134 K  | train
+217 | decoder_variable_selection.single_variable_grns.time_idx                                  | GatedResidualNetwork            | 16.8 K | train
+218 | decoder_variable_selection.single_variable_grns.time_idx.fc1                              | Linear                          | 4.2 K  | train
+219 | decoder_variable_selection.single_variable_grns.time_idx.elu                              | ELU                             | 0      | train
+220 | decoder_variable_selection.single_variable_grns.time_idx.fc2                              | Linear                          | 4.2 K  | train
+221 | decoder_variable_selection.single_variable_grns.time_idx.gate_norm                        | GateAddNorm                     | 8.4 K  | train
+222 | decoder_variable_selection.single_variable_grns.time_idx.gate_norm.glu                    | GatedLinearUnit                 | 8.3 K  | train
+223 | decoder_variable_selection.single_variable_grns.time_idx.gate_norm.glu.dropout            | Dropout                         | 0      | train
+224 | decoder_variable_selection.single_variable_grns.time_idx.gate_norm.glu.fc                 | Linear                          | 8.3 K  | train
+225 | decoder_variable_selection.single_variable_grns.time_idx.gate_norm.add_norm               | AddNorm                         | 128    | train
+226 | decoder_variable_selection.single_variable_grns.time_idx.gate_norm.add_norm.norm          | LayerNorm                       | 128    | train
+227 | decoder_variable_selection.single_variable_grns.mes                                       | GatedResidualNetwork            | 16.8 K | train
+228 | decoder_variable_selection.single_variable_grns.mes.fc1                                   | Linear                          | 4.2 K  | train
+229 | decoder_variable_selection.single_variable_grns.mes.elu                                   | ELU                             | 0      | train
+230 | decoder_variable_selection.single_variable_grns.mes.fc2                                   | Linear                          | 4.2 K  | train
+231 | decoder_variable_selection.single_variable_grns.mes.gate_norm                             | GateAddNorm                     | 8.4 K  | train
+232 | decoder_variable_selection.single_variable_grns.mes.gate_norm.glu                         | GatedLinearUnit                 | 8.3 K  | train
+233 | decoder_variable_selection.single_variable_grns.mes.gate_norm.glu.dropout                 | Dropout                         | 0      | train
+234 | decoder_variable_selection.single_variable_grns.mes.gate_norm.glu.fc                      | Linear                          | 8.3 K  | train
+235 | decoder_variable_selection.single_variable_grns.mes.gate_norm.add_norm                    | AddNorm                         | 128    | train
+236 | decoder_variable_selection.single_variable_grns.mes.gate_norm.add_norm.norm               | LayerNorm                       | 128    | train
+237 | decoder_variable_selection.single_variable_grns.semana_ano                                | GatedResidualNetwork            | 16.8 K | train
+238 | decoder_variable_selection.single_variable_grns.semana_ano.fc1                            | Linear                          | 4.2 K  | train
+239 | decoder_variable_selection.single_variable_grns.semana_ano.elu                            | ELU                             | 0      | train
+240 | decoder_variable_selection.single_variable_grns.semana_ano.fc2                            | Linear                          | 4.2 K  | train
+241 | decoder_variable_selection.single_variable_grns.semana_ano.gate_norm                      | GateAddNorm                     | 8.4 K  | train
+242 | decoder_variable_selection.single_variable_grns.semana_ano.gate_norm.glu                  | GatedLinearUnit                 | 8.3 K  | train
+243 | decoder_variable_selection.single_variable_grns.semana_ano.gate_norm.glu.dropout          | Dropout                         | 0      | train
+244 | decoder_variable_selection.single_variable_grns.semana_ano.gate_norm.glu.fc               | Linear                          | 8.3 K  | train
+245 | decoder_variable_selection.single_variable_grns.semana_ano.gate_norm.add_norm             | AddNorm                         | 128    | train
+246 | decoder_variable_selection.single_variable_grns.semana_ano.gate_norm.add_norm.norm        | LayerNorm                       | 128    | train
+247 | decoder_variable_selection.single_variable_grns.trimestre                                 | GatedResidualNetwork            | 16.8 K | train
+248 | decoder_variable_selection.single_variable_grns.trimestre.fc1                             | Linear                          | 4.2 K  | train
+249 | decoder_variable_selection.single_variable_grns.trimestre.elu                             | ELU                             | 0      | train
+250 | decoder_variable_selection.single_variable_grns.trimestre.fc2                             | Linear                          | 4.2 K  | train
+251 | decoder_variable_selection.single_variable_grns.trimestre.gate_norm                       | GateAddNorm                     | 8.4 K  | train
+252 | decoder_variable_selection.single_variable_grns.trimestre.gate_norm.glu                   | GatedLinearUnit                 | 8.3 K  | train
+253 | decoder_variable_selection.single_variable_grns.trimestre.gate_norm.glu.dropout           | Dropout                         | 0      | train
+254 | decoder_variable_selection.single_variable_grns.trimestre.gate_norm.glu.fc                | Linear                          | 8.3 K  | train
+255 | decoder_variable_selection.single_variable_grns.trimestre.gate_norm.add_norm              | AddNorm                         | 128    | train
+256 | decoder_variable_selection.single_variable_grns.trimestre.gate_norm.add_norm.norm         | LayerNorm                       | 128    | train
+257 | decoder_variable_selection.single_variable_grns.ano                                       | GatedResidualNetwork            | 16.8 K | train
+258 | decoder_variable_selection.single_variable_grns.ano.fc1                                   | Linear                          | 4.2 K  | train
+259 | decoder_variable_selection.single_variable_grns.ano.elu                                   | ELU                             | 0      | train
+260 | decoder_variable_selection.single_variable_grns.ano.fc2                                   | Linear                          | 4.2 K  | train
+261 | decoder_variable_selection.single_variable_grns.ano.gate_norm                             | GateAddNorm                     | 8.4 K  | train
+262 | decoder_variable_selection.single_variable_grns.ano.gate_norm.glu                         | GatedLinearUnit                 | 8.3 K  | train
+263 | decoder_variable_selection.single_variable_grns.ano.gate_norm.glu.dropout                 | Dropout                         | 0      | train
+264 | decoder_variable_selection.single_variable_grns.ano.gate_norm.glu.fc                      | Linear                          | 8.3 K  | train
+265 | decoder_variable_selection.single_variable_grns.ano.gate_norm.add_norm                    | AddNorm                         | 128    | train
+266 | decoder_variable_selection.single_variable_grns.ano.gate_norm.add_norm.norm               | LayerNorm                       | 128    | train
+267 | decoder_variable_selection.single_variable_grns.dia_festivo                               | GatedResidualNetwork            | 16.8 K | train
+268 | decoder_variable_selection.single_variable_grns.dia_festivo.fc1                           | Linear                          | 4.2 K  | train
+269 | decoder_variable_selection.single_variable_grns.dia_festivo.elu                           | ELU                             | 0      | train
+270 | decoder_variable_selection.single_variable_grns.dia_festivo.fc2                           | Linear                          | 4.2 K  | train
+271 | decoder_variable_selection.single_variable_grns.dia_festivo.gate_norm                     | GateAddNorm                     | 8.4 K  | train
+272 | decoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.glu                 | GatedLinearUnit                 | 8.3 K  | train
+273 | decoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.glu.dropout         | Dropout                         | 0      | train
+274 | decoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.glu.fc              | Linear                          | 8.3 K  | train
+275 | decoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.add_norm            | AddNorm                         | 128    | train
+276 | decoder_variable_selection.single_variable_grns.dia_festivo.gate_norm.add_norm.norm       | LayerNorm                       | 128    | train
+277 | decoder_variable_selection.single_variable_grns.ocupacion                                 | GatedResidualNetwork            | 16.8 K | train
+278 | decoder_variable_selection.single_variable_grns.ocupacion.fc1                             | Linear                          | 4.2 K  | train
+279 | decoder_variable_selection.single_variable_grns.ocupacion.elu                             | ELU                             | 0      | train
+280 | decoder_variable_selection.single_variable_grns.ocupacion.fc2                             | Linear                          | 4.2 K  | train
+281 | decoder_variable_selection.single_variable_grns.ocupacion.gate_norm                       | GateAddNorm                     | 8.4 K  | train
+282 | decoder_variable_selection.single_variable_grns.ocupacion.gate_norm.glu                   | GatedLinearUnit                 | 8.3 K  | train
+283 | decoder_variable_selection.single_variable_grns.ocupacion.gate_norm.glu.dropout           | Dropout                         | 0      | train
+284 | decoder_variable_selection.single_variable_grns.ocupacion.gate_norm.glu.fc                | Linear                          | 8.3 K  | train
+285 | decoder_variable_selection.single_variable_grns.ocupacion.gate_norm.add_norm              | AddNorm                         | 128    | train
+286 | decoder_variable_selection.single_variable_grns.ocupacion.gate_norm.add_norm.norm         | LayerNorm                       | 128    | train
+287 | decoder_variable_selection.single_variable_grns.relative_time_idx                         | GatedResidualNetwork            | 16.8 K | train
+288 | decoder_variable_selection.single_variable_grns.relative_time_idx.fc1                     | Linear                          | 4.2 K  | train
+289 | decoder_variable_selection.single_variable_grns.relative_time_idx.elu                     | ELU                             | 0      | train
+290 | decoder_variable_selection.single_variable_grns.relative_time_idx.fc2                     | Linear                          | 4.2 K  | train
+291 | decoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm               | GateAddNorm                     | 8.4 K  | train
+292 | decoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.glu           | GatedLinearUnit                 | 8.3 K  | train
+293 | decoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.glu.dropout   | Dropout                         | 0      | train
+294 | decoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.glu.fc        | Linear                          | 8.3 K  | train
+295 | decoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.add_norm      | AddNorm                         | 128    | train
+296 | decoder_variable_selection.single_variable_grns.relative_time_idx.gate_norm.add_norm.norm | LayerNorm                       | 128    | train
+297 | decoder_variable_selection.prescalers                                                     | ModuleDict                      | 1.0 K  | train
+298 | decoder_variable_selection.softmax                                                        | Softmax                         | 0      | train
+299 | static_context_variable_selection                                                         | GatedResidualNetwork            | 16.8 K | train
+300 | static_context_variable_selection.fc1                                                     | Linear                          | 4.2 K  | train
+301 | static_context_variable_selection.elu                                                     | ELU                             | 0      | train
+302 | static_context_variable_selection.fc2                                                     | Linear                          | 4.2 K  | train
+303 | static_context_variable_selection.gate_norm                                               | GateAddNorm                     | 8.4 K  | train
+304 | static_context_variable_selection.gate_norm.glu                                           | GatedLinearUnit                 | 8.3 K  | train
+305 | static_context_variable_selection.gate_norm.glu.dropout                                   | Dropout                         | 0      | train
+306 | static_context_variable_selection.gate_norm.glu.fc                                        | Linear                          | 8.3 K  | train
+307 | static_context_variable_selection.gate_norm.add_norm                                      | AddNorm                         | 128    | train
+308 | static_context_variable_selection.gate_norm.add_norm.norm                                 | LayerNorm                       | 128    | train
+309 | static_context_initial_hidden_lstm                                                        | GatedResidualNetwork            | 16.8 K | train
+310 | static_context_initial_hidden_lstm.fc1                                                    | Linear                          | 4.2 K  | train
+311 | static_context_initial_hidden_lstm.elu                                                    | ELU                             | 0      | train
+312 | static_context_initial_hidden_lstm.fc2                                                    | Linear                          | 4.2 K  | train
+313 | static_context_initial_hidden_lstm.gate_norm                                              | GateAddNorm                     | 8.4 K  | train
+314 | static_context_initial_hidden_lstm.gate_norm.glu                                          | GatedLinearUnit                 | 8.3 K  | train
+315 | static_context_initial_hidden_lstm.gate_norm.glu.dropout                                  | Dropout                         | 0      | train
+316 | static_context_initial_hidden_lstm.gate_norm.glu.fc                                       | Linear                          | 8.3 K  | train
+317 | static_context_initial_hidden_lstm.gate_norm.add_norm                                     | AddNorm                         | 128    | train
+318 | static_context_initial_hidden_lstm.gate_norm.add_norm.norm                                | LayerNorm                       | 128    | train
+319 | static_context_initial_cell_lstm                                                          | GatedResidualNetwork            | 16.8 K | train
+320 | static_context_initial_cell_lstm.fc1                                                      | Linear                          | 4.2 K  | train
+321 | static_context_initial_cell_lstm.elu                                                      | ELU                             | 0      | train
+322 | static_context_initial_cell_lstm.fc2                                                      | Linear                          | 4.2 K  | train
+323 | static_context_initial_cell_lstm.gate_norm                                                | GateAddNorm                     | 8.4 K  | train
+324 | static_context_initial_cell_lstm.gate_norm.glu                                            | GatedLinearUnit                 | 8.3 K  | train
+325 | static_context_initial_cell_lstm.gate_norm.glu.dropout                                    | Dropout                         | 0      | train
+326 | static_context_initial_cell_lstm.gate_norm.glu.fc                                         | Linear                          | 8.3 K  | train
+327 | static_context_initial_cell_lstm.gate_norm.add_norm                                       | AddNorm                         | 128    | train
+328 | static_context_initial_cell_lstm.gate_norm.add_norm.norm                                  | LayerNorm                       | 128    | train
+329 | static_context_enrichment                                                                 | GatedResidualNetwork            | 16.8 K | train
+330 | static_context_enrichment.fc1                                                             | Linear                          | 4.2 K  | train
+331 | static_context_enrichment.elu                                                             | ELU                             | 0      | train
+332 | static_context_enrichment.fc2                                                             | Linear                          | 4.2 K  | train
+333 | static_context_enrichment.gate_norm                                                       | GateAddNorm                     | 8.4 K  | train
+334 | static_context_enrichment.gate_norm.glu                                                   | GatedLinearUnit                 | 8.3 K  | train
+335 | static_context_enrichment.gate_norm.glu.dropout                                           | Dropout                         | 0      | train
+336 | static_context_enrichment.gate_norm.glu.fc                                                | Linear                          | 8.3 K  | train
+337 | static_context_enrichment.gate_norm.add_norm                                              | AddNorm                         | 128    | train
+338 | static_context_enrichment.gate_norm.add_norm.norm                                         | LayerNorm                       | 128    | train
+339 | lstm_encoder                                                                              | LSTM                            | 66.6 K | train
+340 | lstm_decoder                                                                              | LSTM                            | 66.6 K | train
+341 | post_lstm_gate_encoder                                                                    | GatedLinearUnit                 | 8.3 K  | train
+342 | post_lstm_gate_encoder.dropout                                                            | Dropout                         | 0      | train
+343 | post_lstm_gate_encoder.fc                                                                 | Linear                          | 8.3 K  | train
+344 | post_lstm_add_norm_encoder                                                                | AddNorm                         | 128    | train
+345 | post_lstm_add_norm_encoder.norm                                                           | LayerNorm                       | 128    | train
+346 | static_enrichment                                                                         | GatedResidualNetwork            | 20.9 K | train
+347 | static_enrichment.fc1                                                                     | Linear                          | 4.2 K  | train
+348 | static_enrichment.elu                                                                     | ELU                             | 0      | train
+349 | static_enrichment.context                                                                 | Linear                          | 4.1 K  | train
+350 | static_enrichment.fc2                                                                     | Linear                          | 4.2 K  | train
+351 | static_enrichment.gate_norm                                                               | GateAddNorm                     | 8.4 K  | train
+352 | static_enrichment.gate_norm.glu                                                           | GatedLinearUnit                 | 8.3 K  | train
+353 | static_enrichment.gate_norm.glu.dropout                                                   | Dropout                         | 0      | train
+354 | static_enrichment.gate_norm.glu.fc                                                        | Linear                          | 8.3 K  | train
+355 | static_enrichment.gate_norm.add_norm                                                      | AddNorm                         | 128    | train
+356 | static_enrichment.gate_norm.add_norm.norm                                                 | LayerNorm                       | 128    | train
+357 | multihead_attn                                                                            | InterpretableMultiHeadAttention | 10.4 K | train
+358 | multihead_attn.dropout                                                                    | Dropout                         | 0      | train
+359 | multihead_attn.v_layer                                                                    | Linear                          | 1.0 K  | train
+360 | multihead_attn.q_layers                                                                   | ModuleList                      | 4.2 K  | train
+361 | multihead_attn.q_layers.0                                                                 | Linear                          | 1.0 K  | train
+362 | multihead_attn.q_layers.1                                                                 | Linear                          | 1.0 K  | train
+363 | multihead_attn.q_layers.2                                                                 | Linear                          | 1.0 K  | train
+364 | multihead_attn.q_layers.3                                                                 | Linear                          | 1.0 K  | train
+365 | multihead_attn.k_layers                                                                   | ModuleList                      | 4.2 K  | train
+366 | multihead_attn.k_layers.0                                                                 | Linear                          | 1.0 K  | train
+367 | multihead_attn.k_layers.1                                                                 | Linear                          | 1.0 K  | train
+368 | multihead_attn.k_layers.2                                                                 | Linear                          | 1.0 K  | train
+369 | multihead_attn.k_layers.3                                                                 | Linear                          | 1.0 K  | train
+370 | multihead_attn.attention                                                                  | ScaledDotProductAttention       | 0      | train
+371 | multihead_attn.attention.softmax                                                          | Softmax                         | 0      | train
+372 | multihead_attn.w_h                                                                        | Linear                          | 1.0 K  | train
+373 | post_attn_gate_norm                                                                       | GateAddNorm                     | 8.4 K  | train
+374 | post_attn_gate_norm.glu                                                                   | GatedLinearUnit                 | 8.3 K  | train
+375 | post_attn_gate_norm.glu.dropout                                                           | Dropout                         | 0      | train
+376 | post_attn_gate_norm.glu.fc                                                                | Linear                          | 8.3 K  | train
+377 | post_attn_gate_norm.add_norm                                                              | AddNorm                         | 128    | train
+378 | post_attn_gate_norm.add_norm.norm                                                         | LayerNorm                       | 128    | train
+379 | pos_wise_ff                                                                               | GatedResidualNetwork            | 16.8 K | train
+380 | pos_wise_ff.fc1                                                                           | Linear                          | 4.2 K  | train
+381 | pos_wise_ff.elu                                                                           | ELU                             | 0      | train
+382 | pos_wise_ff.fc2                                                                           | Linear                          | 4.2 K  | train
+383 | pos_wise_ff.gate_norm                                                                     | GateAddNorm                     | 8.4 K  | train
+384 | pos_wise_ff.gate_norm.glu                                                                 | GatedLinearUnit                 | 8.3 K  | train
+385 | pos_wise_ff.gate_norm.glu.dropout                                                         | Dropout                         | 0      | train
+386 | pos_wise_ff.gate_norm.glu.fc                                                              | Linear                          | 8.3 K  | train
+387 | pos_wise_ff.gate_norm.add_norm                                                            | AddNorm                         | 128    | train
+388 | pos_wise_ff.gate_norm.add_norm.norm                                                       | LayerNorm                       | 128    | train
+389 | pre_output_gate_norm                                                                      | GateAddNorm                     | 8.4 K  | train
+390 | pre_output_gate_norm.glu                                                                  | GatedLinearUnit                 | 8.3 K  | train
+391 | pre_output_gate_norm.glu.fc                                                               | Linear                          | 8.3 K  | train
+392 | pre_output_gate_norm.add_norm                                                             | AddNorm                         | 128    | train
+393 | pre_output_gate_norm.add_norm.norm                                                        | LayerNorm                       | 128    | train
+394 | output_layer                                                                              | Linear                          | 455    | train
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+659 K     Trainable params
+0         Non-trainable params
+659 K     Total params
+2.636     Total estimated model params size (MB)
+395       Modules in train mode
+0         Modules in eval mode

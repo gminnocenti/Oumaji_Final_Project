@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/7716cabe5d174b14ac56a6d9c9c0ca2e/artifacts
+end_time: 1747867810617
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 7716cabe5d174b14ac56a6d9c9c0ca2e
+run_name: angry-kite-539
+run_uuid: 7716cabe5d174b14ac56a6d9c9c0ca2e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747867808760
+status: 3
+tags: []
+user_id: bernardocisneros

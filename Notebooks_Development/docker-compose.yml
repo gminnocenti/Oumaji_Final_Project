@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mlflow:
+    build:
+      context: .              # Path to your Dockerfile (same folder)
+      dockerfile: Dockerfile # Optional if your file is named 'Dockerfile'
+    container_name: mlflow_Oumaji_experiment
+    ports:
+      - "5001:5000"           # Maps container port 5000 to host port 5001
+    volumes:
+      - ./mlruns:/ml/mlruns          # Persists MLflow run metadata
+      - ./mlartifacts:/ml/mlartifacts # Persists MLflow artifacts

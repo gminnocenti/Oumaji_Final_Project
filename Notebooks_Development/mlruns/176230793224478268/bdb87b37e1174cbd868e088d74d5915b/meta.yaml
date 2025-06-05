@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/bdb87b37e1174cbd868e088d74d5915b/artifacts
+end_time: 1747867843631
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: bdb87b37e1174cbd868e088d74d5915b
+run_name: shivering-donkey-250
+run_uuid: bdb87b37e1174cbd868e088d74d5915b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747867841453
+status: 3
+tags: []
+user_id: bernardocisneros

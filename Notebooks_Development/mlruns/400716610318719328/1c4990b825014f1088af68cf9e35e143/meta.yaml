@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/400716610318719328/1c4990b825014f1088af68cf9e35e143/artifacts
+end_time: 1748116602164
+entry_point_name: ''
+experiment_id: '400716610318719328'
+lifecycle_stage: active
+run_id: 1c4990b825014f1088af68cf9e35e143
+run_name: nimble-robin-546
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748116598466
+status: 3
+tags: []
+user_id: axllopez

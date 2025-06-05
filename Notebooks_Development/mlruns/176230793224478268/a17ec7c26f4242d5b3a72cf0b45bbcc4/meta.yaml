@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/a17ec7c26f4242d5b3a72cf0b45bbcc4/artifacts
+end_time: 1747867788620
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: a17ec7c26f4242d5b3a72cf0b45bbcc4
+run_name: invincible-cub-205
+run_uuid: a17ec7c26f4242d5b3a72cf0b45bbcc4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747867786199
+status: 3
+tags: []
+user_id: bernardocisneros

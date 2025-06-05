@@ -1,0 +1,46 @@
+artifact_path: model
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.11.8
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.7.0
+is_signature_from_type_hint: false
+mlflow_version: 2.22.0
+model_size_bytes: 384181
+model_uuid: 406cf6fe553c46e1b620d32ecf2f3ce3
+prompts: null
+run_id: b82175e0e93f4c9896edd58b19156386
+saved_input_example_info:
+  artifact_path: input_example.json
+  serving_input_path: serving_input_example.json
+  type: ndarray
+signature:
+  inputs: '[{"name": "encoder_cat", "type": "tensor", "tensor-spec": {"dtype": "int64",
+    "shape": [-1, 16, 0]}}, {"name": "encoder_cont", "type": "tensor", "tensor-spec":
+    {"dtype": "float32", "shape": [-1, 16, 14]}}, {"name": "encoder_target", "type":
+    "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1, 16]}}, {"name": "encoder_lengths",
+    "type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}, {"name":
+    "decoder_cat", "type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1,
+    4, 0]}}, {"name": "decoder_cont", "type": "tensor", "tensor-spec": {"dtype": "float32",
+    "shape": [-1, 4, 14]}}, {"name": "decoder_target", "type": "tensor", "tensor-spec":
+    {"dtype": "int64", "shape": [-1, 4]}}, {"name": "decoder_lengths", "type": "tensor",
+    "tensor-spec": {"dtype": "int64", "shape": [-1]}}, {"name": "decoder_time_idx",
+    "type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1, 4]}}, {"name":
+    "groups", "type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1, 1]}},
+    {"name": "target_scale", "type": "tensor", "tensor-spec": {"dtype": "float32",
+    "shape": [-1, 2]}}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1,
+    12]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-05-20 00:26:48.686890'

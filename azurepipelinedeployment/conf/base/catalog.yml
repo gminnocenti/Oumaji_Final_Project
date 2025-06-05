@@ -1,0 +1,95 @@
+# Here you can define all your datasets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+iar_reservaciones:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/01_raw/iar_Reservaciones-1.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+iaab_Detalles_Vtas:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/01_raw/iaab_Detalles_Vtas-1.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+
+data_cleaned_reservations:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/02_intermediate/df_cleaned_reservations.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+data_cleaned_dishes:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/02_intermediate/df_cleaned_dishes.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+daily_occupancy:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/03_primary/daily_occupancy.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+daily_demand:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/03_primary/daily_demand.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+dishes_mapping:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/03_primary/dishes_mapping.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+price_df:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/08_reporting/price_df.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+  
+occupancy_predictions:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/08_reporting/occupancy_predictions.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False
+
+
+mae_per_plt:
+  type: pandas.CSVDataset
+  filepath: "abfs://tca-blob-storage/08_reporting/mae_per_plt.csv"
+  credentials:
+    account_name: ${ENV_VAR:STORAGE_ACCOUNT_NAME}
+    account_key:   ${ENV_VAR:STORAGE_ACCOUNT_KEY}
+  save_args:
+    index: False

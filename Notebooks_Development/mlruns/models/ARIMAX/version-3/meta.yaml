@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1747889810276
+current_stage: None
+description: ''
+last_updated_timestamp: 1747889810276
+name: ARIMAX
+run_id: 13fa513cc187451eab8e61fea9c649c4
+run_link: ''
+source: mlflow-artifacts:/176230793224478268/13fa513cc187451eab8e61fea9c649c4/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/176230793224478268/13fa513cc187451eab8e61fea9c649c4/artifacts/model
+user_id: null
+version: 3

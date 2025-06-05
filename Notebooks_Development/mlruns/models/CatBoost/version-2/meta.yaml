@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1747798283578
+current_stage: None
+description: ''
+last_updated_timestamp: 1747798283578
+name: CatBoost
+run_id: 3472419ff04f44c987347852354e57ca
+run_link: ''
+source: mlflow-artifacts:/176230793224478268/3472419ff04f44c987347852354e57ca/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/176230793224478268/3472419ff04f44c987347852354e57ca/artifacts/model
+user_id: null
+version: 2

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/633372116283320291/090822756ca24ff08c1d602a7313bbb2/artifacts
+end_time: 1747267846201
+entry_point_name: ''
+experiment_id: '633372116283320291'
+lifecycle_stage: active
+run_id: 090822756ca24ff08c1d602a7313bbb2
+run_name: sincere-snipe-989
+run_uuid: 090822756ca24ff08c1d602a7313bbb2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747267841800
+status: 3
+tags: []
+user_id: test

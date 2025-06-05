@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/f70dd1f4b9b94e96ba03fc3e1e80859c/artifacts
+end_time: 1747782547417
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: f70dd1f4b9b94e96ba03fc3e1e80859c
+run_name: unique-hen-82
+run_uuid: f70dd1f4b9b94e96ba03fc3e1e80859c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747782531087
+status: 3
+tags: []
+user_id: jlaza

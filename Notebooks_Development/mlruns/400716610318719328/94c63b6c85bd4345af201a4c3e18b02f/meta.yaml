@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/400716610318719328/94c63b6c85bd4345af201a4c3e18b02f/artifacts
+end_time: 1748115023508
+entry_point_name: ''
+experiment_id: '400716610318719328'
+lifecycle_stage: active
+run_id: 94c63b6c85bd4345af201a4c3e18b02f
+run_name: masked-shrew-497
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748115020052
+status: 3
+tags: []
+user_id: axllopez

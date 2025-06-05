@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1747867854058
+current_stage: None
+description: ''
+last_updated_timestamp: 1747867854058
+name: SARIMA
+run_id: 1446ffeb23574ab4897c051638668a17
+run_link: ''
+source: mlflow-artifacts:/176230793224478268/1446ffeb23574ab4897c051638668a17/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/176230793224478268/1446ffeb23574ab4897c051638668a17/artifacts/model
+user_id: null
+version: 5

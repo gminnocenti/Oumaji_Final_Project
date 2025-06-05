@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/3436813d2b5a4d368f5094ca1b5bec90/artifacts
+end_time: 1747924655741
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 3436813d2b5a4d368f5094ca1b5bec90
+run_name: indecisive-croc-811
+run_uuid: 3436813d2b5a4d368f5094ca1b5bec90
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747924654035
+status: 3
+tags: []
+user_id: bernardocisneros

@@ -1,0 +1,32 @@
+[project]
+name = "oumaji-final-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "ipykernel>=6.29.5",
+    "matplotlib>=3.9.4",
+    "mlflow>=2.22.0",
+    "pandas>=2.2.3",
+    "numpy>=2.0.2",
+    "pandas>=2.2.3",
+    "scikit-learn>=1.6.1",
+    "pyyaml>=6.0.2",
+    "torch>=2.2.0,<3.0", # binarios oficiales, incluye CUDA CPU
+    "lightning>=2.2.0,<2.6", # sucesor de PyTorch-Lightning
+    "pytorch-forecasting>=1.2.1,<1.4",
+    "torchmetrics>=0.11.4,<0.12",
+    "holidays>=0.73",
+    "lightgbm>=4.6.0",
+    "statsmodels>=0.14.4",
+    "mlforecast>=1.0.2",
+    "xgboost>=2.1.4",
+    "catboost>=1.2.8",
+    "streamlit>=1.45.1",
+]
+
+[tool.uv.workspace]
+members = [
+    "front_end_dashboard_and_API",
+]

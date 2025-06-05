@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/400716610318719328/bbfdf55d251440a19d2ea28843bf4fd4/artifacts
+end_time: 1748116460246
+entry_point_name: ''
+experiment_id: '400716610318719328'
+lifecycle_stage: active
+run_id: bbfdf55d251440a19d2ea28843bf4fd4
+run_name: abundant-yak-914
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748116456222
+status: 3
+tags: []
+user_id: axllopez

@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/400716610318719328/28987ac1ed1045df879ebddb0634168d/artifacts
+end_time: 1748116218026
+entry_point_name: ''
+experiment_id: '400716610318719328'
+lifecycle_stage: active
+run_id: 28987ac1ed1045df879ebddb0634168d
+run_name: whimsical-bass-170
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748116213764
+status: 3
+tags: []
+user_id: axllopez

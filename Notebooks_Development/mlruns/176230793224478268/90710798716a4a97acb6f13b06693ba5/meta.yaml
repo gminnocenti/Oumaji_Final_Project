@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/90710798716a4a97acb6f13b06693ba5/artifacts
+end_time: 1747864317709
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: 90710798716a4a97acb6f13b06693ba5
+run_name: illustrious-rook-198
+run_uuid: 90710798716a4a97acb6f13b06693ba5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747864315993
+status: 3
+tags: []
+user_id: bernardocisneros

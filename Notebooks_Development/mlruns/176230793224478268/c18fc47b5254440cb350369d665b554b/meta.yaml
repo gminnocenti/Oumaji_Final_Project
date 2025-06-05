@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/176230793224478268/c18fc47b5254440cb350369d665b554b/artifacts
+end_time: 1747789854883
+entry_point_name: ''
+experiment_id: '176230793224478268'
+lifecycle_stage: active
+run_id: c18fc47b5254440cb350369d665b554b
+run_name: clean-fox-622
+run_uuid: c18fc47b5254440cb350369d665b554b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747789852472
+status: 3
+tags: []
+user_id: bernardocisneros

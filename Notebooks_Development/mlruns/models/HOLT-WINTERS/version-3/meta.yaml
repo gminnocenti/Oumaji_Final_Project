@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1747924784061
+current_stage: None
+description: ''
+last_updated_timestamp: 1747924784061
+name: HOLT-WINTERS
+run_id: 320c824142be49e4a0a569c831c1a0c1
+run_link: ''
+source: mlflow-artifacts:/176230793224478268/320c824142be49e4a0a569c831c1a0c1/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/176230793224478268/320c824142be49e4a0a569c831c1a0c1/artifacts/model
+user_id: null
+version: 3
