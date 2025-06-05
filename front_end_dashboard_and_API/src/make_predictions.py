@@ -13,7 +13,6 @@ import logging
 import sys
 import os
 from load_data import load_demand,load_occupancy
-
 vault_url = os.environ["KEYVAULT_URI"]
 credential = DefaultAzureCredential()
 secret_client     = SecretClient(vault_url=vault_url, credential=credential)

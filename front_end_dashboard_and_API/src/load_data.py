@@ -15,7 +15,8 @@ import numpy as np
 from azure.storage.blob import BlobServiceClient
 
 import streamlit as st
-
+from dotenv import load_dotenv
+load_dotenv()
 vault_url = os.environ["KEYVAULT_URI"]
 credential = DefaultAzureCredential()
 secret_client     = SecretClient(vault_url=vault_url, credential=credential)
@@ -127,3 +128,12 @@ def load_food_beverage_csv(
 ) -> pd.DataFrame:
     """Lee y cachea el CSV de F&B especificado."""
     return pd.read_csv(csv_path, parse_dates=parse_dates)
+@st.cache_data(show_spinner=False)
+def load_demand_pred() -> pd.DataFrame:
+    """Lee y cachea el CSV especificado."""
+    df = download_blob_storage_df(
+        blob_storage_name="tca-blob-storage",
+        dataset_directory="08_reporting/demand_predictions.csv"
+    )
+    df['fecha'] = pd.to_datetime(df['fecha'])
+    return df

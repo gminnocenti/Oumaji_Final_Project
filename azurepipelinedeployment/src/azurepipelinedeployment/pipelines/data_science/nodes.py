@@ -9,6 +9,8 @@ from sklearn.metrics import mean_absolute_error
 import mlflow
 from mlflow.models.signature import infer_signature
 import numpy as np
+from collections import deque
+
 from lightgbm import LGBMRegressor
 from pandas.tseries.offsets import DateOffset
 import holidays
@@ -63,7 +65,7 @@ def sarimax(daily_occupancy: pd.DataFrame) -> pd.DataFrame:
 
     h = 30
     last_date = daily_occupancy['fecha'].iloc[-1]
-
+    list_last_date=[last_date]
     # 1. Rango de fechas futuro
     future_dates = pd.date_range(
         start=last_date + DateOffset(days=1),
@@ -106,9 +108,9 @@ def sarimax(daily_occupancy: pd.DataFrame) -> pd.DataFrame:
         {"fecha": future_dates, "ocupacion_pred": preds}
     )
 
-    return occupancy_predictions
+    return occupancy_predictions,list_last_date
 
-def lightgbm_pca(daily_demand: pd.DataFrame, feature_cols: list) -> pd.DataFrame:
+def lightgbm_pca(daily_demand: pd.DataFrame, feature_cols: list,list_last_date:list,emb_df:pd.DataFrame,k_list:list,occupancy_predictions:pd.DataFrame) -> pd.DataFrame:
 
     """
     Train a LightGBM model using the daily demand data.
@@ -157,6 +159,63 @@ def lightgbm_pca(daily_demand: pd.DataFrame, feature_cols: list) -> pd.DataFrame
     preds_df = pd.DataFrame(preds, columns=["cantidad"])
     signature = infer_signature(input_example_df, preds_df)
 
+    last_date=list_last_date[0]
+    h=30
+    k=k_list[0]
+    last_date = pd.to_datetime(last_date)
+    future_dates = pd.date_range(
+    start=last_date + DateOffset(days=1),
+    periods=h,
+    freq='D'
+    )
+    platillos      = daily_demand["platillo_id"].unique()
+    emb_cols       = [f"pca_emb_{i}" for i in range(k)]
+    emb_lookup     = emb_df.set_index("platillo_id")[emb_cols]
+
+    buffers = {}
+    for pid, g in daily_demand.sort_values("fecha").groupby("platillo_id"):
+        last7 = g["cantidad"].tail(7).tolist()
+        buffers[pid] = deque(last7, maxlen=7)
+
+    mx_holidays = holidays.Mexico(
+        years=range(future_dates[0].year, future_dates[-1].year + 1)
+
+    )
+    occupancy_predictions["fecha"] = pd.to_datetime(occupancy_predictions["fecha"])
+    occupancy_predictions.set_index("fecha", inplace=True)
+    pred_rows = []
+
+
+    for fecha in future_dates:                          
+        festivo     = int(fecha.normalize() in mx_holidays)
+        dia_semana  = fecha.weekday()
+        ocupacion_d = occupancy_predictions.loc[fecha]              
+
+        for pid in platillos:                           
+            dq = buffers[pid]
+            lag_1 = dq[-1]
+            lag_7 = dq[0]
+
+            row_dict = {
+                "platillo_id": pid,
+                "lag_1":       lag_1,
+                "lag_7":       lag_7,
+                "ocupacion":   ocupacion_d,
+                "dia_semana":  dia_semana,
+                "dia_festivo": festivo,
+                **emb_lookup.loc[pid].to_dict(),
+            }
+
+            y_hat = model.predict(pd.DataFrame(row_dict, index=[0]))[0]
+            pred_rows.append({"fecha": fecha, "platillo_id": pid, "cantidad_pred": np.floor(y_hat)})
+
+            dq.append(y_hat)
+
+    df_pred_demand = (
+        pd.DataFrame(pred_rows)
+        .sort_values(["platillo_id", "fecha"]) 
+        .reset_index(drop=True)
+    )
     with mlflow.start_run(run_name="train_evaluate_lightgbm_model"):
         mlflow.log_params({f"data.{k}": v for k, v in params.items()})
         mlflow.lightgbm.log_model(
@@ -168,7 +227,7 @@ def lightgbm_pca(daily_demand: pd.DataFrame, feature_cols: list) -> pd.DataFrame
             )
 
 
-    return mae_per_plt
+    return mae_per_plt,df_pred_demand
 
 
 

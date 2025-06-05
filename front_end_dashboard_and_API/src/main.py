@@ -3,7 +3,7 @@
 from pathlib import Path
 import streamlit as st
 from PIL import Image
-from load_data import load_occupancy_csv,load_occupancy,load_occupancy_forecast,load_demand,load_pricedf,load_dishes_mapping
+from load_data import load_occupancy_csv,load_occupancy,load_occupancy_forecast,load_demand,load_pricedf,load_dishes_mapping,load_demand_pred
 # Tabs
 from tabs.occupancy_tab import occupancy_tab_logic
 from tabs.fnb_bi import food_beverage_bi_logic
@@ -34,6 +34,7 @@ try:
     df_demand = load_demand()
     y_pred_30 = load_occupancy()
     price_df=load_pricedf()
+    demand_pred= load_demand_pred()
 
 except FileNotFoundError:
     st.error(
@@ -64,4 +65,4 @@ with fnb_tab_bi:
 
 # === FOOD & BEVERAGE FORECAST ===
 with fnb_tab_forecast:
-    fnb_forecast(df_demand=df_demand,y_pred_30=y_pred_30,df_ids=df_ids,price_df=price_df)
+    fnb_forecast(df_demand=df_demand,y_pred_30=y_pred_30,df_ids=df_ids,price_df=price_df,demand_pred=demand_pred)

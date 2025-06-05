@@ -229,6 +229,7 @@ def generate_daily_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple
     pca_dummy = PCA().fit(statistics)
     cum_var = np.cumsum(pca_dummy.explained_variance_ratio_)
     k = np.searchsorted(cum_var, 0.95) + 1
+    k_list=[k]
     pca = PCA(n_components=k, random_state=42).fit(statistics)
     embedddings = pca.transform(statistics)
 
@@ -242,7 +243,7 @@ def generate_daily_demand(df: pd.DataFrame, df_occupancy: pd.DataFrame) -> tuple
 
     feature_cols = ['platillo_id','lag_1','lag_7','ocupacion','dia_semana','dia_festivo'] + [f'pca_emb_{i}' for i in range(k)]
 
-    return daily_df, mapping_df, price_df, feature_cols
+    return daily_df, mapping_df, price_df, feature_cols,k_list,emb_df
 
 
 

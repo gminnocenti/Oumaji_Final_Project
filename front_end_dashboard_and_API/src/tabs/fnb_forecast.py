@@ -11,6 +11,7 @@ def fnb_forecast(
     y_pred_30: pd.DataFrame,
     df_ids: pd.DataFrame,
     price_df: pd.DataFrame,
+    demand_pred: pd.DataFrame
 ):
     # Preparamos los datos históricos de demanda
     df_demand["fecha"] = pd.to_datetime(df_demand["fecha"])
@@ -28,7 +29,6 @@ def fnb_forecast(
         st.session_state.pred_ids = []
 
     st.subheader("🍽️ Pronóstico de consumo de platillos de los siguientes 30 días")
-
     # Selector de platillos
     all_fc_dishes = df_demand["platillo_cve"].unique()
     default_dishes = ["BBP002", "BBP008", "BBP010", "BBP014"]
@@ -45,21 +45,14 @@ def fnb_forecast(
         mapping = dict(zip(df_ids["platillo_cve"], df_ids["platillo_id"]))
         sel_ids = [mapping[cve] for cve in sel_fc_dishes]
         with st.spinner("Corriendo predicciones…"):
-            y_pred_30, emb_lookup, future_dates, buffers, mx_holidays = prediction_preprocessing()
-            st.session_state.pred_fc = get_prediction_df(
-                y_pred_30=y_pred_30,
-                emb_lookup=emb_lookup,
-                future_dates=future_dates,
-                mx_holidays=mx_holidays,
-                platillos=sel_ids,
-                buffers=buffers,
-            )
+            st.session_state.pred_fc = demand_pred[demand_pred['platillo_id'].isin(sel_ids)]
             st.session_state.pred_ids = sel_fc_dishes
-
+    
     df_results = st.session_state.pred_fc
     if df_results is None:
         st.info("Elige platillos y pulsa **Predecir** para ver resultados.")
         return
+    
 
     # Procesamos el dataset de resultados
     df_results = (

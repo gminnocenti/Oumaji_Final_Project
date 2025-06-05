@@ -13,13 +13,13 @@ def create_pipeline(**kwargs) -> Pipeline:
         node(
             func = sarimax,
             inputs = "daily_occupancy",
-            outputs = "occupancy_predictions",
+            outputs = ["occupancy_predictions","list_last_date"],
             name = "sarimax_model"
         ),
         node(
             func = lightgbm_pca,
-            inputs = ["daily_demand","feature_cols"],
-            outputs = "mae_per_plt",
+            inputs = ["daily_demand","feature_cols","list_last_date","emb_df","k_list","occupancy_predictions"],
+            outputs = ["mae_per_plt","df_pred_demand"],
             name = "lightgbm_model"
         )
 
